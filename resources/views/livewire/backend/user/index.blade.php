@@ -83,7 +83,7 @@
                                                     {!! $item->statuslabel !!}
                                                 </td>
                                                 <td>
-                                                    {{ !empty($item->roles) ? $item->roles->first()->name:'' }}
+                                                    {{-- {{ !empty($item->roles) ? $item->roles->first()->name:'' }} --}}
                                                 </td>
                                                 <td class="text-center align-midle">
                                                     @if ($item->masterstatus == config('cms.default_masteruser') || $currentUser->id == $item->id)
