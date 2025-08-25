@@ -69,10 +69,6 @@ class UserController extends Controller
     */
     public function store(Request $request): RedirectResponse
     {
-        // $this->validate($request, [
-        //     'name'                  => 'required|min:2',
-        //     'email'                 => 'required|email|unique:users,email',
-        // ]);
 
         $validated = $request->validate([
             'name'                  => 'required|min:2',
@@ -136,14 +132,13 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
 
+        $validated = [];
 
-        $validateData = [];
-
-        $validateData = array_merge($request->validate([
+        $validated = array_merge($request->validate([
             'name'                  => 'required|min:2',
             'email'                 => 'required|email',
-            'username'              => 'required|min:6',
-            'celuller_no'           => 'required|min:11|max:12',
+            'username'              => 'min:6',
+            'celuller_no'           => 'min:11|max:12',
         ]));
 
 
@@ -160,13 +155,13 @@ class UserController extends Controller
         $current_hashed_password = $user->password;
 
         if(!empty($request->input('password'))) {
-            $validateData = array_merge($request->validate([
+            $validated = array_merge($request->validate([
                 'password'              => 'confirmed|min:8',
                 'password_confirmation' => 'required'
             ]));
 
             if ($user->masterstatus == config('cms.default_masteruser')){
-                $validateData = array_merge($request->validate([
+                $validated = array_merge($request->validate([
                     'current_password_for_password' => ['required', 'customPassCheckHashed:'.$current_hashed_password]
                 ]));
             }
@@ -176,7 +171,7 @@ class UserController extends Controller
             ]);
         }
 
-        $this->validate($validateData);
+        // $this->validate($validated);
 
         $user->update($data);
 
