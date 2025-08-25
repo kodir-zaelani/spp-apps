@@ -91,6 +91,7 @@ class UserController extends Controller
 
         $user = User::create($data);
 
+
         //assign role to user
         $user->syncRoles($request->input('roles'));
         return redirect()->route('backend.users.index')->with(['success' => 'Add User ' . $user['name'] . ' was successfully!']);
@@ -135,14 +136,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
 
+
         $validateData = [];
 
-        $validateData = array_merge($validateData, [
+        $validateData = array_merge($request->validate([
             'name'                  => 'required|min:2',
             'email'                 => 'required|email',
             'username'              => 'required|min:6',
             'celuller_no'           => 'required|min:11|max:12',
-        ]);
+        ]));
 
 
         // Default data
@@ -158,15 +160,15 @@ class UserController extends Controller
         $current_hashed_password = $user->password;
 
         if(!empty($request->input('password'))) {
-            $validateData = array_merge($validateData, [
+            $validateData = array_merge($request->validate([
                 'password'              => 'confirmed|min:8',
                 'password_confirmation' => 'required'
-            ]);
+            ]));
 
             if ($user->masterstatus == config('cms.default_masteruser')){
-                $validateData = array_merge($validateData, [
+                $validateData = array_merge($request->validate([
                     'current_password_for_password' => ['required', 'customPassCheckHashed:'.$current_hashed_password]
-                ]);
+                ]));
             }
 
             $data = array_merge($data, [
