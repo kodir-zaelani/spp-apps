@@ -176,7 +176,7 @@ class UserController extends Controller
             ]);
         }
 
-        $this->validate($request, $validateData);
+        $this->validate($request->validateData);
 
         $user->update($data);
 
