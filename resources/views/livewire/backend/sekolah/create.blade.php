@@ -3,27 +3,7 @@
         <h4 class="box-tile">Tambah data</h4>
     </div>
     <div class="box-body">
-        <div class="row">
-            <div class="col-12">
-               <div class="box box-bordered border-success">
-                <div class="box-body">
-                     <form action="{{ route('backend.yayasan.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
-                    @error('importfile')
-                    <div class="form-control-feedback">
-                        <small> <code>{{ $message }}</code> </small>
-                    </div>
-                    @enderror
-                    <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
-                </form>
-                <div class="py-20">
-                    Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1_template_yayasan.xlsx" >Template</a>
-                </div>
-                </div>
-               </div>
-            </div>
-        </div>
+
         <ul class="nav nav-tabs customtab2" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#home7" role="tab"><span class="hidden-sm-up">
@@ -42,10 +22,44 @@
                     <div class="box">
                         <form enctype="multipart/form-data" >
                             <div class="box-body">
+                                 <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <h5>NPSN <span class="text-danger">*</span></h5>
+                                            <div class="controls">
+                                                <input type="text" wire:model="npsn" class="form-control @error('npsn') is-invalid @enderror" value="{{ old('npsn') }}" placeholder=" NPSN">
+                                            </div>
+                                            <div class="form-control-feedback">
+                                                <small><code> NPSN </code></small>
+                                            </div>
+                                            @error('npsn')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <h5>NSS</h5>
+                                            <div class="controls">
+                                                <input type="text" wire:model="nss" class="form-control @error('nss') is-invalid @enderror" value="{{ old('nss') }}" placeholder=" NSS">
+                                            </div>
+                                            <div class="form-control-feedback">
+                                                <small><code> NSS  </code></small>
+                                            </div>
+                                            @error('nss')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <h5>Nama Yayasan <span class="text-danger">*</span></h5>
+                                    <h5>Nama Sekolah <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input type="text" wire:model="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" placeholder="Nama Yayasan" required>
+                                        <input type="text" wire:model="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" placeholder="Nama Sekolah" required>
                                     </div>
                                     @error('nama')
                                     <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
@@ -54,9 +68,9 @@
                                 <div class="form-group">
                                     <h5>Nomor SK Pendirian <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input type="url" wire:model="no_pendirian_yayasan" class="form-control @error('no_pendirian_yayasan') is-invalid @enderror" value="{{ old('no_pendirian_yayasan') }}" placeholder="Nomor Sk Pendiriran" required>
+                                        <input type="url" wire:model="sk_pendirian_sekolah" class="form-control @error('sk_pendirian_sekolah') is-invalid @enderror" value="{{ old('sk_pendirian_sekolah') }}" placeholder="Nomor Sk Pendiriran" required>
                                     </div>
-                                    @error('no_pendirian_yayasan')
+                                    @error('sk_pendirian_sekolah')
                                     <div class="form-control-feedback"><small>
                                         <code>{{ $message }}</code> </small>
                                     </div>
@@ -65,12 +79,12 @@
                                 <div class="form-group">
                                     <h5>Tanggal Pendirian <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input type="date" wire:model="tgl_pendirian_yayasan" class="form-control @error('tgl_pendirian_yayasan') is-invalid @enderror" value="{{ old('tgl_pendirian_yayasan') }}" placeholder="Tanggal Pendirian" required>
+                                        <input type="date" wire:model="tanggal_pendirian_sekolah" class="form-control @error('tanggal_pendirian_sekolah') is-invalid @enderror" value="{{ old('tanggal_pendirian_sekolah') }}" placeholder="Tanggal Pendirian" required>
                                     </div>
                                     <div class="form-control-feedback">
                                         <small><code>Tangal/bulan/Tahun | 30/01/2000</code></small>
                                     </div>
-                                    @error('tgl_pendirian_yayasan')
+                                    @error('tanggal_pendirian_sekolah')
                                     <div class="form-control-feedback"><small>
                                         <code>{{ $message }}</code> </small>
                                     </div>
@@ -296,7 +310,7 @@
 
                             </div>
                             <div class="box-footer">
-                                <input type="text" name="status_yayasan_update" value="1" hidden>
+                                <input type="text" name="status_sekolah_update" value="1" hidden>
                                 <button class="btn btn-sm btn-primary"  wire:click.prevent="store">
                                     <i class="fa fa-save me-2" aria-hidden="true"></i> Save
                                 </button>
@@ -366,29 +380,5 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="modalImportLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalImportLabel">Import Data Yayasan</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('backend.yayasan.import') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
-                        @error('importfile')
-                        <div class="form-control-feedback">
-                            <small> <code>{{ $message }}</code> </small>
-                        </div>
-                        @enderror
-                        <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
-                    </form>
-                    <div class="py-20">
-                        Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1_template_yayasan.xlsx" >Template</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>

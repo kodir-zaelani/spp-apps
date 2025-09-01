@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
-class YayasanimportCollection implements ToCollection, WithHeadingRow, WithStartRow
+class _YayasanimportCollection implements ToCollection, WithHeadingRow, WithStartRow
 {
 
     /**

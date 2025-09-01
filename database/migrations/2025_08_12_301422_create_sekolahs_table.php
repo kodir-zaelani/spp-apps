@@ -47,6 +47,7 @@ return new class extends Migration
             $table->char('kebutuhan_khusus_id',10)->nullable();
             $table->string('lintang')->nullable();
             $table->string('bujur')->nullable();
+            $table->text('maps')->nullable();
             $table->string('no_telp')->nullable();
             $table->string('no_fax')->nullable();
             $table->string('website')->nullable();

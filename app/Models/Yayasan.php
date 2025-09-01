@@ -24,7 +24,7 @@ class Yayasan extends Model
         if (!is_null($this->logo_yayasan)) {
             $directory = config('cms.image.directoryLogo');
             $imagePath = public_path() . "/{$directory}" . $this->logo_yayasan;
-            if (file_exists($imagePath)) $imageUrl = asset("/{$directory}" . $this->logo_yayasan);
+            if (file_exists($imagePath)) $logoyayasanUrl = asset("/{$directory}" . $this->logo_yayasan);
         }
 
         return $logoyayasanUrl;

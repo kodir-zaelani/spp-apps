@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Backend\Sekolah;
 
+use App\Models\Sekolah;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Laravolt\Indonesia\Models\City;
 use Laravolt\Indonesia\Models\Village;
@@ -15,6 +17,8 @@ class Index extends Component
 {
     use WithFileUploads;
     public $sekolahid;
+    public $nss;
+    public $npsn;
     public $nama;
     public $alamat;
     public $rt;
@@ -28,13 +32,15 @@ class Index extends Component
     public $maps;
     public $lintang;
     public $bujur;
-    public $no_pendirian_sekolah;
-    public $tgl_pendirian_sekolah;
+    public $sk_pendirian_sekolah;
+    public $tanggal_pendirian_sekolah;
     public $status_sekolah_update;
     public $province_code;
     public $logo_sekolah;
 
     public $editId;
+    public $npsnedit;
+    public $nssedit;
     public $namaedit;
     public $alamatedit;
     public $rtedit;
@@ -48,8 +54,8 @@ class Index extends Component
     public $mapsedit;
     public $lintangedit;
     public $bujuredit;
-    public $no_pendirian_sekolahedit;
-    public $tgl_pendirian_sekolahedit;
+    public $sk_pendirian_sekolahedit;
+    public $tanggal_pendirian_sekolahedit;
     public $status_sekolah_updateedit;
     public $maps_update;
 
@@ -81,14 +87,18 @@ class Index extends Component
     public function store()
     {
         $validateData = [
+            'npsn'    => 'required|min:6|unique:sekolah,nama',
             'nama'    => 'required|min:2|unique:sekolah,nama',
         ];
 
         // Default data
         $data = [
+            'npsn'                  => $this->npsn,
+            'nss'                  => $this->nss,
             'nama'                  => $this->nama,
-            'no_pendirian_sekolah'  => $this->no_pendirian_sekolah,
-            'tgl_pendirian_sekolah' => $this->tgl_pendirian_sekolah,
+            'slug'                  => Str::slug($this->nama),
+            'sk_pendirian_sekolah'  => $this->sk_pendirian_sekolah,
+            'tanggal_pendirian_sekolah' => $this->tanggal_pendirian_sekolah,
             'website'               => $this->website,
             'email'                 => $this->email,
             'rt'                    => $this->rt,
@@ -122,6 +132,8 @@ class Index extends Component
         $model = Sekolah::find($this->modelId);
 
         $this->editId                  = $model->id;
+        $this->nssedit                  = $model->nss;
+        $this->npsnedit                  = $model->npsn;
         $this->namaedit                  = $model->nama;
         $this->alamatedit                = $model->alamat;
         $this->rtedit                    = $model->rt;
@@ -135,8 +147,8 @@ class Index extends Component
         $this->mapsedit                  = $model->maps;
         $this->lintangedit               = $model->lintang;
         $this->bujuredit                 = $model->bujur;
-        $this->no_pendirian_sekolahedit  = $model->no_pendirian_sekolah;
-        $this->tgl_pendirian_sekolahedit = $model->tgl_pendirian_sekolah;
+        $this->sk_pendirian_sekolahedit  = $model->sk_pendirian_sekolah;
+        $this->tanggal_pendirian_sekolahedit = $model->tanggal_pendirian_sekolah;
         $this->province_codeedit         = $model->province_code;
         $this->city_codeedit             = $model->city_code;
         $this->district_codeedit         = $model->district_code;
@@ -180,8 +192,8 @@ class Index extends Component
 
         $validateData = [
             'namaedit' => 'required|min:2',
-            'no_pendirian_sekolahedit'  => 'required',
-            'tgl_pendirian_sekolahedit' => 'required',
+            'sk_pendirian_sekolahedit'  => 'required',
+            'tanggal_pendirian_sekolahedit' => 'required',
             'emailedit'                 => 'required',
             'rtedit'                    => 'required',
             'rwedit'                    => 'required',
@@ -193,6 +205,8 @@ class Index extends Component
         // Default data
         $data = [
             'nama'                  => $this->namaedit,
+            'nss'                  => $this->nssedit,
+            'npsn'                  => $this->npsnedit,
             'alamat'                => $this->alamatedit,
             'rt'                    => $this->rtedit,
             'rw'                    => $this->rwedit,
@@ -202,8 +216,8 @@ class Index extends Component
             'kode_pos'              => $this->kode_posedit,
             'website'               => $this->websiteedit,
             'email'                 => $this->emailedit,
-            'no_pendirian_sekolah'  => $this->no_pendirian_sekolahedit,
-            'tgl_pendirian_sekolah' => $this->tgl_pendirian_sekolahedit,
+            'sk_pendirian_sekolah'  => $this->sk_pendirian_sekolahedit,
+            'tanggal_pendirian_sekolah' => $this->tanggal_pendirian_sekolahedit,
         ];
 
         if (!empty($this->provinceCode)) {

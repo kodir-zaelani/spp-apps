@@ -1,9 +1,8 @@
 <div>
     <div class="box-header with-border">
-        <h4 class="box-tile">Yayasan {{$yayasan->nama}}</h4>
+        <h4 class="box-tile">Sekolah {{$sekolah->nama}}</h4>
         <div class="box-controls pull-right">
-            <button wire:click="edit('{{ $yayasan->id }}')" class="btn btn-sm btn-warning" title="Edit"><i class="fa fa-edit "></i> Edit</button>
-            <a href="{{route('backend.yayasan.export')}}" class="btn btn-sm btn-success me-3" title="Export"><i class="fa fa-file "></i> Export</a>
+            <button wire:click="edit('{{ $sekolah->id }}')" class="btn btn-sm btn-warning" title="Edit"><i class="fa fa-edit "></i> Edit</button>
         </div>
     </div>
     <div class="box-body">
@@ -12,7 +11,7 @@
                 <div class="box ">
                     <div class="text-center box-body">
                         <div class="widget-user-image">
-                            <img class="rounded-circle h-160" src="{{ $yayasan->logoyayasanThumbUrl ? $yayasan->logoyayasanThumbUrl : '/uploads/images/default/no_image.png' }}" alt="{{ $yayasan->nama }}">
+                            <img class="h-160 rounded-circle" src="{{ $sekolah->logosekolahThumbUrl ? $sekolah->logosekolahThumbUrl : '/uploads/images/default/no_image.png' }}" alt="{{ $sekolah->nama }}">
                         </div>
                     </div>
                 </div>
@@ -22,7 +21,7 @@
             <div class="col-12 col-lg-5 col-xl-4">
                 <div class="box box-bordered border-success">
                     <div class="box-body">
-                        <form  enctype="multipart/form-data" action="{{ route('backend.yayasan.updatelogo', $yayasan->id) }}" method="POST">
+                        <form  enctype="multipart/form-data" action="{{ route('backend.sekolah.updatelogo', $sekolah->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="text-center box-body ">
@@ -30,19 +29,20 @@
                                 <div class="form-group">
                                     <div class=" fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new img-thumbnail" style="width: 200px;">
-                                            <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
+                                            <img src="{{ $sekolah->logosekolahThumbUrl ? $sekolah->logosekolahThumbUrl : '/uploads/images/default/no_image.png' }}" alt="...">
+                                            {{-- <img src="{{ asset('') }}assets/images/no_image.png" alt="..."> --}}
                                         </div>
                                         <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
                                         <div>
                                             <span class="btn btn-outline-secondary btn-file">
                                                 <span class="fileinput-new"> Select image</span>
                                                 <span class="fileinput-exists">Change</span>
-                                                <input type="file" class="@error('logo_yayasan') is-invalid @enderror" name="logo_yayasan" value="{{ old('logo_yayasan') }}">
+                                                <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}">
                                             </span>
                                             <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
                                         </div>
                                     </div>
-                                    @error('logo_yayasan')
+                                    @error('logo_sekolah')
                                     <div class="form-control-feedback">
                                         <small> <code>{{ $message }}</code> </small>
                                     </div>
@@ -89,19 +89,19 @@
                                                         <label class="col-form-label">Pimpinan </label>
                                                     </div>
                                                     <div class="col-sm-9">
-                                                        <label class="col-form-label">: {{$yayasan->pimpinan}}</label>
+                                                        <label class="col-form-label">: {{$sekolah->pimpinan}}</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <label class="col-form-label">Akta Pendirian</label>
                                                     </div>
                                                     <div class="col-sm-9">
-                                                        <label class="col-form-label">: {{$yayasan->no_pendirian_yayasan}}</label>
+                                                        <label class="col-form-label">: {{$sekolah->no_pendirian_sekolah}}</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <label class="col-form-label">Tanggal Akta</label>
                                                     </div>
                                                     <div class="col-sm-9">
-                                                        <label class="col-form-label">: {{ TanggalID('j M Y', $yayasan->tgl_pendirian_yayasan) }}</label>
+                                                        <label class="col-form-label">: {{ TanggalID('j M Y', $sekolah->tgl_pendirian_sekolah) }}</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,67 +123,67 @@
                                                     <label class="col-form-label">Website</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->website}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->website}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Email</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->email}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->email}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Tel./Fax</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->no_telp}} / {{$yayasan->no_fax}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->no_telp}} / {{$sekolah->no_fax}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Alamat</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->alamat}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->alamat}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">RT/RW</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->rt}} / {{$yayasan->rw}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->rt}} / {{$sekolah->rw}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Nama Dusun</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->nama_dusun}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->nama_dusun}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Kode Pos</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->kode_pos}}</label>
+                                                    <label class="col-form-label">: {{$sekolah->kode_pos}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Provinsi</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->province->name}}</label>
+                                                    <label class="col-form-label">: {{ !empty($sekolah->province_code) ? $sekolah->province->name:'' }}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Kab./Kota</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->city->name}}</label>
+                                                    <label class="col-form-label">: {{!empty($sekolah->city_code) ? $sekolah->city->name :''}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Kecamatan</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->district->name}}</label>
+                                                    <label class="col-form-label">: {{!empty($sekolah->district_code) ? $sekolah->district->name :''}}</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="col-form-label">Desa/Kelurahan</label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <label class="col-form-label">: {{$yayasan->village->name}}</label>
+                                                    <label class="col-form-label">: {{!empty($sekolah->village_code) ? $sekolah->village->name :''}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -202,7 +202,7 @@
                                                 <div class="form-group">
                                                     <h5>Lintang</h5>
                                                     <div class="controls">
-                                                        <input type="text" name="lintang" class="form-control " value="{{ $yayasan->lintang }}" placeholder=" Lintang" readonly>
+                                                        <input type="text" name="lintang" class="form-control " value="{{ $sekolah->lintang }}" placeholder=" Lintang" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,7 +210,7 @@
                                                 <div class="form-group">
                                                     <h5>Bujur</h5>
                                                     <div class="controls">
-                                                        <input type="text" name="bujur" class="form-control " value="{{ $yayasan->bujur }}" placeholder=" Bujur" readonly>
+                                                        <input type="text" name="bujur" class="form-control " value="{{ $sekolah->bujur }}" placeholder=" Bujur" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -218,7 +218,7 @@
                                         <div class="form-group">
                                             <h5>Maps</h5>
                                             <div class="controls">
-                                                <iframe src="{{$yayasan->maps}}" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                                <iframe src="{{$sekolah->maps}}" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
                                             </div>
 
                                         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,31 +15,63 @@ class Sekolah extends Model
     protected $primaryKey   = 'id';
     protected $guarded      = [];
 
-    public function getLogoSekolahUrlAttribute($value)
+    public function getLogosekolahUrlAttribute($value)
     {
-        $imageUrl = "";
+        $logosekolahUrl = "";
 
-        if (!is_null($this->logo)) {
+        if (!is_null($this->logo_sekolah)) {
             $directory = config('cms.image.directoryLogo');
-            $imagePath = public_path() . "/{$directory}" . $this->logo;
-            if (file_exists($imagePath)) $imageUrl = asset("/{$directory}" . $this->logo);
+            $imagePath = public_path() . "/{$directory}" . $this->logo_sekolah;
+            if (file_exists($imagePath)) $logosekolahUrl = asset("/{$directory}" . $this->logo_sekolah);
         }
 
-        return $imageUrl;
+        return $logosekolahUrl;
     }
 
-    public function getLogoSekolahThumbUrlAttribute($value)
+    public function getLogosekolahThumbUrlAttribute($value)
     {
-        $imageThumbUrl = "";
+        $logosekolahThumbUrl = "";
 
-        if (!is_null($this->logo)) {
+        if (!is_null($this->logo_sekolah)) {
             $directory = config('cms.image.directoryLogo');
-            $ext       = substr(strrchr($this->logo, '.'), 1);
-            $thumbnail = str_replace(".{$ext}", "_thumb.{$ext}", $this->logo);
+            $ext       = substr(strrchr($this->logo_sekolah, '.'), 1);
+            $thumbnail = str_replace(".{$ext}", "_thumb.{$ext}", $this->logo_sekolah);
             $imagePath = public_path() . "/{$directory}" . $thumbnail;
-            if (file_exists($imagePath)) $imageThumbUrl = asset("/$directory" . $thumbnail);
+            if (file_exists($imagePath)) $logosekolahThumbUrl = asset("/$directory" . $thumbnail);
         }
 
-        return $imageThumbUrl;
+        return $logosekolahThumbUrl;
+    }
+
+ public function province()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\Province', 'province_code', 'code');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\City', 'city_code', 'code');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\District', 'district_code', 'code');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\Village', 'village_code', 'code');
+    }
+
+     public function generateSlug($nama)
+    {
+        return Str::slug($nama);
+    }
+
+    // Set slug auto with nama dengan muttator
+    public function setNameAttribute($value)
+    {
+        $this->attributes['nama'] = $value;
+        $this->attributes['slug'] = $this->generateSlug($value);
     }
 }

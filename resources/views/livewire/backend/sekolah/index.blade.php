@@ -24,13 +24,13 @@
         <div class="row">
             <div class="col-xl-12 col-md-12 col-lg-12 col-12">
                 <div class="box box-bordered border-primary">
-                    @if (empty($yayasan))
-                    @include('livewire.backend.yayasan.create')
+                    @if (empty($sekolah))
+                    @include('livewire.backend.sekolah.create')
                     @else
                     @if ($statusUpdate == true)
-                    @include('livewire.backend.yayasan.edit')
+                    @include('livewire.backend.sekolah.edit')
                     @elseif ($statusUpdate == false)
-                    @include('livewire.backend.yayasan.view')
+                    @include('livewire.backend.sekolah.view')
                     @endif
                     @endif
                 </div>

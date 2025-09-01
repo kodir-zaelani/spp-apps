@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Imports\SekolahimportModel;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 use Laravolt\Indonesia\Models\Provinsi;
 use App\Imports\SekolahimportCollection;
 use App\Http\Requests\SekolahStoreRequest;
+use Intervention\Image\Laravel\Facades\Image;
+use App\Http\Requests\logosekolahUpdateRequest;
+use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
 
 class SekolahController extends Controller
 {
@@ -41,7 +45,7 @@ class SekolahController extends Controller
     public function index()
     {
         return view('backend.sekolah.index', [
-            'title' => 'Data Yayasan'
+            'title' => 'Data Sekolah'
         ]);
 
         // $sekolah= Sekolah::where('status_sekolah_update', '1')->first();
@@ -85,9 +89,9 @@ class SekolahController extends Controller
             'maps'                  => $request->input('maps'),
             'lintang'               => $request->input('lintang'),
             'bujur'                 => $request->input('bujur'),
-            'nama_pimpinam_yayasan' => $request->input('nama_pimpinam_yayasan'),
-            'no_pendirian_yayasan'  => $request->input('no_pendirian_yayasan'),
-            'tgl_pendirian_yayasan' => $request->input('tgl_pendirian_yayasan'),
+            'nama_pimpinam_sekolah' => $request->input('nama_pimpinam_sekolah'),
+            'no_pendirian_sekolah'  => $request->input('no_pendirian_sekolah'),
+            'tgl_pendirian_sekolah' => $request->input('tgl_pendirian_sekolah'),
             'status_sekolah_update' => $request->input('status_sekolah_update'),
 
         ];
@@ -154,9 +158,9 @@ class SekolahController extends Controller
             'maps'                  => $request->input('maps'),
             'lintang'               => $request->input('lintang'),
             'bujur'                 => $request->input('bujur'),
-            'nama_pimpinam_yayasan' => $request->input('nama_pimpinam_yayasan'),
-            'no_pendirian_yayasan'  => $request->input('no_pendirian_yayasan'),
-            'tgl_pendirian_yayasan' => $request->input('tgl_pendirian_yayasan'),
+            'nama_pimpinam_sekolah' => $request->input('nama_pimpinam_sekolah'),
+            'no_pendirian_sekolah'  => $request->input('no_pendirian_sekolah'),
+            'tgl_pendirian_sekolah' => $request->input('tgl_pendirian_sekolah'),
             'status_sekolah_update' => $request->input('status_sekolah_update'),
         ];
 
@@ -204,19 +208,102 @@ class SekolahController extends Controller
         return redirect()->back()->with(['success' => 'Data sekolah Berhasil Disimpan!']);
     }
 
-    // function remove image
-    private function removeLogo($logo_sekolah)
+     public function updatelogo (logosekolahUpdateRequest $request, Sekolah $sekolah)
     {
-        if (!empty($logo_sekolah)) {
-            $imagePath     = $this->uploadPath . '/' . $logo_sekolah;
-            $ext           = substr(strrchr($logo_sekolah, '.'), 1);
-            $thumbnail     = str_replace(".{$ext}", "_thumb.{$ext}", $logo_sekolah);
+        //cek gambar lama
+        $oldLogo        = $sekolah->logo_sekolah;
+
+        // Default data
+        $data = [];
+
+        //upload logo_sekolah (cara kedua)
+        if ($request->has('logo_sekolah')) {
+            # upload with logo_sekolah
+            $logo_sekolah = $request->file('logo_sekolah');
+            $fileName = 'logo_' . time() . $logo_sekolah->getClientOriginalName();
+            $destination = $this->uploadPath;
+
+            $successUploaded = Image::read($logo_sekolah);
+            $successUploaded->save($destination . $fileName, 80);
+
+            if ($successUploaded) {
+                # script dibawah koneksi ke file App\config\cms.php
+                $width = config('cms.image.thumbnaillogo.width');
+                $height = config('cms.image.thumbnaillogo.height');
+                $extension = $logo_sekolah->getClientOriginalExtension();
+                $thumbnail = str_replace(".{$extension}", "_thumb.{$extension}", $fileName);
+
+                Image::read($destination . '/' . $fileName)
+                ->resize($width, $height)
+                ->save($destination . '/' . $thumbnail);
+            }
+
+            // Tampung isi image ke variable data
+            $image_data = $fileName;
+            // This is to save the filename of the image in the database
+            $data = array_merge($data, [
+                'logo_sekolah' => $image_data
+            ]);
+        }
+
+        $sekolah->update($data);
+
+        // Jika gambar lama ada maka lakukan hapus gambar
+        if ($oldLogo !== $sekolah->logo_sekolah) {
+            $this->removeLogo($oldLogo);
+        }
+        $this->cleanupTempImages();
+        //redirect dengan pesan sukses
+        return redirect()->back()->with(['success' => 'Logo Berhasil Disimpan!']);
+    }
+
+    // Fungsi hapus file di folder livewire-tmp setelah simpan
+
+    protected function cleanupTempImages()
+    {
+        $tempImages = Storage::files('livewire-tmp');
+
+        foreach ($tempImages as $file) {
+            # code...
+            Storage::delete($file);
+        }
+    }
+
+    // Fungsi hapus file di folder livewire-tmp secara automatis
+    protected function cleanupOldUploads()
+    {
+        if (FileUploadConfiguration::isUsingS3()) return;
+
+        $storage = FileUploadConfiguration::storage();
+
+        foreach ($storage->allFiles(FileUploadConfiguration::path()) as $filePathname) {
+            // On busy websites, this cleanup code can run in multiple threads causing part of the output
+            // of allFiles() to have already been deleted by another thread.
+            if (! $storage->exists($filePathname)) continue;
+
+            $yesterdaysStamp = now()->subHours(2)->timestamp;
+            if ($yesterdaysStamp > $storage->lastModified($filePathname)) {
+                $storage->delete($filePathname);
+            }
+        }
+    }
+
+    // function remove image
+    private function removeLogo($oldLogo)
+    {
+        if (!empty($oldLogo)) {
+            $imagePath     = $this->uploadPath . '/' . $oldLogo;
+            $ext           = substr(strrchr($oldLogo, '.'), 1);
+            $thumbnail     = str_replace(".{$ext}", "_thumb.{$ext}", $oldLogo);
             $thumbnailPath = $this->uploadPath . '/' . $thumbnail;
 
             if (file_exists($imagePath)) unlink($imagePath);
             if (file_exists($thumbnailPath)) unlink($thumbnailPath);
         }
     }
+
+    // function remove image
+
 
      public function import( Request $request)
     {

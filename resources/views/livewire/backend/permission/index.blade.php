@@ -70,7 +70,7 @@
                                                 @endif">
                                                     <th class="text-right" scope="row">{{ $no + $datapermission->firstItem() }}</th>
                                                     <td>
-                                                        {{ !empty($item->name) ? $item->name:'' }}<br/>
+                                                        {{ !empty($item->name) ? $item->name:'' }}
                                                     </td>
                                                     <td>
                                                         {{ !empty($item->description) ? $item->description:'' }}

@@ -12,7 +12,7 @@
                 <div class="box ">
                     <div class="text-center box-body">
                         <div class="widget-user-image">
-                            <img class="rounded-circle h-160" src="{{ $yayasan->logoyayasanThumbUrl ? $yayasan->logoyayasanThumbUrl : '/uploads/images/default/no_image.png' }}" alt="{{ $yayasan->nama }}">
+                            <img class="rounded-circle h-160" src="{{ $sekolah->logosekolahThumbUrl ? $sekolah->logosekolahThumbUrl : '/uploads/images/default/no_image.png' }}" alt="{{ $sekolah->nama }}">
                         </div>
                     </div>
                 </div>
@@ -22,11 +22,11 @@
                             <div class="col-12">
                                 <div>
                                     <p>Pimpinan :</p>
-                                    <p><span class="text-gray">{{$yayasan->nama}}</span> </p>
+                                    <p><span class="text-gray">{{$sekolah->nama}}</span> </p>
                                     <p>No SK Pendidiran : </p>
-                                    <p><span class="text-gray">{{$yayasan->no_pendirian_yayasan}}</span> </p>
+                                    <p><span class="text-gray">{{$sekolah->sk_pendirian_sekolah}}</span> </p>
                                     <p>Tanggal SK Pendirian : </p>
-                                    <p><span class="text-gray">{{$yayasan->tgl_pendirian_yayasan}}</span> </p>
+                                    <p><span class="text-gray">{{$sekolah->tanggal_pendirian_sekolah}}</span> </p>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                                 <div class="form-group row">
                                                     <label for="example-text-input" class="col-sm-3 col-form-label">Nama <span class="text-danger">*</span></label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" wire:model="namaedit" class="form-control @error('namaedit') is-invalid @enderror" value="{{ old('namaedit') }}" placeholder="Nama Yayasan" required>
+                                                        <input type="text" wire:model="namaedit" class="form-control @error('namaedit') is-invalid @enderror" value="{{ old('namaedit') }}" placeholder="Nama YaSekolahsan" required>
                                                     </div>
                                                     @error('namaedit')
                                                     <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
@@ -67,9 +67,9 @@
                                                 <div class="form-group row">
                                                     <label for="example-text-input" class="col-sm-3 col-form-label">No SK Pendirian <span class="text-danger">*</span></label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" wire:model="no_pendirian_yayasanedit" class="form-control @error('no_pendirian_yayasanedit') is-invalid @enderror" value="{{ old('no_pendirian_yayasanedit') }}" placeholder="Nomor Sk Pendiriran" required>
+                                                        <input type="text" wire:model="sk_pendirian_sekolahedit" class="form-control @error('sk_pendirian_sekolahedit') is-invalid @enderror" value="{{ old('sk_pendirian_sekolahedit') }}" placeholder="Nomor Sk Pendiriran" required>
                                                     </div>
-                                                    @error('no_pendirian_yayasanedit')
+                                                    @error('sk_pendirian_sekolahedit')
                                                     <div class="form-control-feedback"><small>
                                                         <code>{{ $message }}</code> </small>
                                                     </div>
@@ -78,10 +78,10 @@
                                                 <div class="form-group row">
                                                     <label for="example-text-input" class="col-sm-3 col-form-label">Tanggal SK <span class="text-danger">*</span></label>
                                                     <div class="col-sm-9">
-                                                        <input type="date" wire:model="tgl_pendirian_yayasanedit" class="form-control @error('tgl_pendirian_yayasanedit') is-invalid @enderror" value="{{ old('tgl_pendirian_yayasanedit') }}" placeholder="Tanggal Pendirian" required>
+                                                        <input type="date" wire:model="tanggal_pendirian_sekolahedit" class="form-control @error('tanggal_pendirian_sekolahedit') is-invalid @enderror" value="{{ old('tanggal_pendirian_sekolahedit') }}" placeholder="Tanggal Pendirian" required>
                                                         <small class="text-danger"><code>Tangal/bulan/Tahun | 30/01/2025</code></small>
                                                     </div>
-                                                    @error('tgl_pendirian_yayasanedit')
+                                                    @error('tanggal_pendirian_sekolahedit')
                                                     <div class="form-control-feedback"><small>
                                                         <code>{{ $message }}</code> </small>
                                                     </div>
@@ -190,7 +190,8 @@
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Provinsi</label>
                                                     <div class="col-sm-4">
-                                                        <input class="form-control" type="text" value="{{$yayasan->province->name}}" id="example-dusun-input">
+
+                                                        <input class="form-control" type="text" value="{{ !empty($sekolah->province_code) ? $sekolah->province->name:'' }}" id="example-dusun-input">
                                                     </div>
                                                     <div class="col-sm-5">
                                                         <select class="form-control select2" style="width: 100%;" wire:model.live="provinceCode" >
@@ -211,7 +212,7 @@
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Kab./Kota</label>
                                                     <div class="col-sm-4">
-                                                        <input class="form-control" type="text" value="{{$yayasan->city->name}}" id="example-dusun-input">
+                                                        <input class="form-control" type="text" value="{{!empty($sekolah->city_code) ? $sekolah->city->name :''}}" id="example-dusun-input">
                                                     </div>
                                                     <div class="col-sm-5">
                                                         <select class="form-control select2" style="width: 100%;" wire:model.live="cityCode">
@@ -232,7 +233,7 @@
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Kecamatan</label>
                                                     <div class="col-sm-4">
-                                                        <input class="form-control" type="text" value="{{$yayasan->district->name}}" id="example-dusun-input">
+                                                        <input class="form-control" type="text" value="{{!empty($sekolah->district_code) ? $sekolah->district->name :''}}" id="example-dusun-input">
                                                     </div>
                                                     <div class="col-sm-5">
                                                         <select class="form-control select2" style="width: 100%;" wire:model.live="districtCode">
@@ -253,7 +254,7 @@
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Desa/Kelurahan</label>
                                                     <div class="col-sm-4">
-                                                        <input class="form-control" type="text" value="{{$yayasan->village->name}}" id="example-dusun-input">
+                                                        <input class="form-control" type="text" value="{{!empty($sekolah->village_code) ? $sekolah->village->name :''}}" id="example-dusun-input">
                                                     </div>
                                                     <div class="col-sm-5">
                                                         <select class="form-control select2" style="width: 100%;" wire:model.live="villageCode">
@@ -358,7 +359,7 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="box box-bordered border-success">
-                                    <form  enctype="multipart/form-data" action="{{ route('backend.yayasan.updatelogo', $yayasan->id) }}" method="POST">
+                                    <form  enctype="multipart/form-data" action="{{ route('backend.sekolah.updatelogo', $sekolah->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
                                         <div class="text-center box-body ">
@@ -373,12 +374,12 @@
                                                         <span class="btn btn-outline-secondary btn-file">
                                                             <span class="fileinput-new"> Select image</span>
                                                             <span class="fileinput-exists">Change</span>
-                                                            <input type="file" class="@error('logo_yayasan') is-invalid @enderror" name="logo_yayasan" value="{{ old('logo_yayasan') }}">
+                                                            <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}">
                                                         </span>
                                                         <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
                                                     </div>
                                                 </div>
-                                                @error('logo_yayasan')
+                                                @error('logo_sekolah')
                                                 <div class="form-control-feedback">
                                                     <small> <code>{{ $message }}</code> </small>
                                                 </div>
