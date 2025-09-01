@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Agama extends Model
 {
-     use HasFactory;
+    use HasFactory;
 
     protected $table        = 'agama';
     protected $guarded    = [];

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Imports\SekolahimportModel;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Laravolt\Indonesia\Models\Provinsi;
 use App\Imports\SekolahimportCollection;
 use App\Http\Requests\SekolahStoreRequest;
 
@@ -39,20 +40,26 @@ class SekolahController extends Controller
      */
     public function index()
     {
-        $sekolah= Sekolah::where('status_sekolah_update', '1')->first();
+        return view('backend.sekolah.index', [
+            'title' => 'Data Yayasan'
+        ]);
 
-        if (!empty($sekolah)) {
-            return redirect()->route('backend.sekolah.edit', $sekolah->id);
-        } else {
-            return view('backend.sekolah.create', [
-                'title' => 'Tambah Data'
-            ]);
-        }
+        // $sekolah= Sekolah::where('status_sekolah_update', '1')->first();
+
+        // if (!empty($sekolah)) {
+        //     return redirect()->route('backend.sekolah.edit', $sekolah->id);
+        // } else {
+        //     return view('backend.sekolah.create', [
+        //          'dataprovinsi' => Provinsi::orderBy('name', 'asc')->get(),
+        //         'title' => 'Tambah Data'
+        //     ]);
+        // }
     }
 
     public function edit($sekolah)
     {
         return view('backend.sekolah.edit', [
+             'dataprovinsi' => Provinsi::orderBy('name', 'asc')->get(),
             'title' => 'Edit sekolah',
             'sekolah' => $sekolah
         ]);

@@ -78,6 +78,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(RefWaktuPenyelenggaraanSeeder::class);
         // $this->call(RefSertifikasiISOSeeder::class);
         // $this->call(RefStatusKepemilikanSarprasSeeder::class);
-        $this->call(JenisLembagaSeeder::class);
+        // $this->call(JenisLembagaSeeder::class);
     }
 }

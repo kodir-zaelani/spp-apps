@@ -17,27 +17,27 @@
         </div>
     </div>
     <section class="content">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
-               <div class="box box-bordered border-success">
-                <div class="box-body">
-                     <form action="{{ route('backend.sekolah.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
-                    @error('importfile')
-                    <div class="form-control-feedback">
-                        <small> <code>{{ $message }}</code> </small>
+                <div class="box box-bordered border-success">
+                    <div class="box-body">
+                        <form action="{{ route('backend.sekolah.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
+                            @error('importfile')
+                            <div class="form-control-feedback">
+                                <small> <code>{{ $message }}</code> </small>
+                            </div>
+                            @enderror
+                            <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
+                        </form>
+                        <div class="py-20">
+                            Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1profil_sekolah.xlsx" >Template</a>
+                        </div>
                     </div>
-                    @enderror
-                    <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
-                </form>
-                <div class="py-20">
-                    Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1profil_sekolah.xlsx" >Template</a>
                 </div>
-                </div>
-               </div>
             </div>
-        </div>
+        </div> --}}
         <form id="post-form" enctype="multipart/form-data" action="{{ route('backend.yayasan.store') }}" method="post">
             <div class="row">
                 @csrf
@@ -89,33 +89,39 @@
                                                 </div>
                                                 <div class="box-body">
                                                     <div class="form-group">
-                                                        <h5>Nama Yayasan <span class="text-danger">*</span></h5>
+                                                        <h5>Nss <span class="text-danger">*</span></h5>
                                                         <div class="controls">
-                                                            <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" placeholder="Nama Yayasan" required>
+                                                            <input type="text" name="nss" class="form-control @error('nss') is-invalid @enderror" value="{{ old('nss') }}" placeholder="Nomor Statistik Sekolah" required>
+                                                        </div>
+                                                        @error('nss')
+                                                        <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <h5>NPSN <span class="text-danger">*</span></h5>
+                                                        <div class="controls">
+                                                            <input type="text" name="npsn" class="form-control @error('npsn') is-invalid @enderror" value="{{ old('npsn') }}" placeholder="NPSN" required>
+                                                        </div>
+                                                        @error('npsn')
+                                                        <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <h5>Nama Sekolah <span class="text-danger">*</span></h5>
+                                                        <div class="controls">
+                                                            <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" placeholder="Nama Sekolah" required>
                                                         </div>
                                                         @error('nama')
                                                         <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
                                                         @enderror
                                                     </div>
-                                                    <div class="form-group">
-                                                        <h5>Nama Pimpinan Yayasan <span class="text-danger">*</span></h5>
-                                                        <div class="controls">
-                                                            <input type="text" name="nama_pimpinam_yayasan" class="form-control @error('nama_pimpinam_yayasan') is-invalid @enderror" value="{{ old('nama_pimpinam_yayasan') }}" placeholder="Nama Pimpina Yayasan" required>
-                                                        </div>
-                                                        <div class="form-control-feedback">
-                                                        </div>
-                                                        @error('nama_pimpinam_yayasan')
-                                                        <div class="form-control-feedback"><small>
-                                                            <code>{{ $message }}</code> </small>
-                                                        </div>
-                                                        @enderror
-                                                    </div>
+
                                                     <div class="form-group">
                                                         <h5>Nomor SK Pendirian <span class="text-danger">*</span></h5>
                                                         <div class="controls">
-                                                            <input type="url" name="no_pendirian_yayasan" class="form-control @error('no_pendirian_yayasan') is-invalid @enderror" value="{{ old('no_pendirian_yayasan') }}" placeholder="Nomor Sk Pendiriran" required>
+                                                            <input type="url" name="sk_pendirian_sekolah" class="form-control @error('sk_pendirian_sekolah') is-invalid @enderror" value="{{ old('sk_pendirian_sekolah') }}" placeholder="Nomor Sk Pendiriran" required>
                                                         </div>
-                                                        @error('no_pendirian_yayasan')
+                                                        @error('sk_pendirian_sekolah')
                                                         <div class="form-control-feedback"><small>
                                                             <code>{{ $message }}</code> </small>
                                                         </div>
@@ -125,11 +131,11 @@
                                                     <div class="form-group">
                                                         <h5>Tanggal Pendirian <span class="text-danger">*</span></h5>
                                                         <div class="controls">
-                                                            <input type="date" name="tgl_pendirian_yayasan" class="form-control @error('tgl_pendirian_yayasan') is-invalid @enderror" value="{{ old('tgl_pendirian_yayasan') }}" placeholder="Tanggal Pendirian" required>
+                                                            <input type="date" name="tanggal_pendirian_sekolah" class="form-control @error('tanggal_pendirian_sekolah') is-invalid @enderror" value="{{ old('tanggal_pendirian_sekolah') }}" placeholder="Tanggal Pendirian" required>
                                                         </div>
                                                         <div class="form-control-feedback"><small><code>Tangal/bulan/Tahun | 30/01/2000</code></small>
                                                         </div>
-                                                        @error('tgl_pendirian_yayasan')
+                                                        @error('tanggal_pendirian_sekolah')
                                                         <div class="form-control-feedback"><small>
                                                             <code>{{ $message }}</code> </small>
                                                         </div>
@@ -273,177 +279,228 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="form-group">
-                                                                <h5>Kecamatan</h5>
-                                                                <div class="controls">
-                                                                    <input type="text" name="kecamatan" class="form-control @error('kecamatan') is-invalid @enderror" value="{{ old('kecamatan') }}" placeholder=" Kecamatan">
-                                                                </div>
-                                                                <div class="form-control-feedback">
-                                                                    <small><code> Kecamatan </code></small>
-                                                                </div>
-                                                                @error('kecamatan')
+                                                    <div class="form-group @error('province_code') has-error @enderror">
+                                                        <h5 >Provinsi <span class="text-danger">*</span></h5>
+                                                        <select class="form-control select2" style="width: 100%;" name="province_code" id="selcetprovince_code">
+                                                            <option value="" holder>Pilih Provinsi</option>
+                                                            @foreach ($dataprovinsi as $item)
+                                                            <option value="{{ $item->id }}"
+                                                                {{ old('province_code') == $item->code ? 'selected' : '' }}>
+                                                                {{ $item->name }} | {{$item->code}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('province_code')
+                                                            <div class="form-control-feedback"><small>
+                                                                <code>{{ $message }}</code> </small>
+                                                            </div>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="form-group @error('city_id') has-error @enderror">
+                                                            <h5 >Kab./Kota <span class="text-danger">*</span></h5>
+                                                            <select class="form-control select2" style="width: 100%;" name="city_id" id="city_id">
+                                                                {{-- <option value="" holder>Kab./Kota</option>
+                                                                @foreach ($dataprovinsi as $item)
+                                                                <option value="{{ $item->id }}"
+                                                                    {{ old('city_id') == $item->code ? 'selected' : '' }}>
+                                                                    {{ $item->name }} | {{$item->code}}</option>
+                                                                    @endforeach --}}
+                                                                </select>
+                                                                @error('city_id')
                                                                 <div class="form-control-feedback"><small>
                                                                     <code>{{ $message }}</code> </small>
                                                                 </div>
                                                                 @enderror
                                                             </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="form-group">
-                                                                <h5>Kab./ Kota</h5>
-                                                                <div class="controls">
-                                                                    <input type="text" name="kabupaten" class="form-control @error('kabupaten') is-invalid @enderror" value="{{ old('kabupaten') }}" placeholder=" Kab./ Kota">
-                                                                </div>
-                                                                <div class="form-control-feedback">
-                                                                    <small><code> Kab./ Kota </code></small>
-                                                                </div>
-                                                                @error('kabupaten')
-                                                                <div class="form-control-feedback"><small>
-                                                                    <code>{{ $message }}</code> </small>
-                                                                </div>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-8">
-                                                            <div class="form-group">
-                                                                <h5>Provinsi</h5>
-                                                                <div class="controls">
-                                                                    <input type="text" name="provinsi" class="form-control @error('provinsi') is-invalid @enderror" value="{{ old('provinsi') }}" placeholder=" Provinsi">
-                                                                </div>
-                                                                <div class="form-control-feedback">
-                                                                    <small><code> Provinsi </code></small>
-                                                                </div>
-                                                                @error('provinsi')
-                                                                <div class="form-control-feedback"><small>
-                                                                    <code>{{ $message }}</code> </small>
-                                                                </div>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <h5>Kode Pos</h5>
-                                                                <div class="controls">
-                                                                    <input type="text" name="kode_pos" class="form-control @error('kode_pos') is-invalid @enderror" value="{{ old('kode_pos') }}" placeholder=" Kode Pos">
-                                                                </div>
-                                                                <div class="form-control-feedback">
-                                                                    <small><code> Kode Pos </code></small>
-                                                                </div>
-                                                                @error('kode_pos')
-                                                                <div class="form-control-feedback"><small>
-                                                                    <code>{{ $message }}</code> </small>
-                                                                </div>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="logo7" role="tabpanel">
-                                        <div class="p-15">
-                                            <div class="row">
-                                                <div class="col-lg-4 col-md-4 col-sm-12">
-                                                    <div class="box h-300">
-                                                        <div class="box-header">
-                                                            <h4 class="box-title">
-                                                                Logo
-                                                            </h4>
-                                                        </div>
-                                                        <div class="text-center box-body ">
-                                                            <label class="form-label">Size : 600 pixel x 400 pixel</label>
-                                                            <div class="form-group">
-                                                                <div class=" fileinput fileinput-new" data-provides="fileinput">
-                                                                    <div class="fileinput-new img-thumbnail" style="width: 200px;">
-                                                                        <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
-                                                                    </div>
-                                                                    <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
-                                                                    <div>
-                                                                        <span class="btn btn-outline-secondary btn-file">
-                                                                            <span class="fileinput-new">
-                                                                                Select image
-                                                                            </span>
-                                                                            <span class="fileinput-exists">Change</span>
-                                                                            <input type="file" class="@error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}"></span>
-                                                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    @error('logo')
-                                                                    <div class="form-control-feedback">
-                                                                        <small> <code>{{ $message }}</code> </small>
+                                                            <div class="form-group @error('city_id') has-error @enderror">
+                                                                <h5 >Kab./Kota <span class="text-danger">*</span></h5>
+                                                                <select class="form-control select2" style="width: 100%;" name="city_id" id="citySelect">
+                                                                    {{-- <option value="" holder>Kab./Kota</option>
+                                                                    @foreach ($dataprovinsi as $item)
+                                                                    <option value="{{ $item->id }}"
+                                                                        {{ old('city_id') == $item->code ? 'selected' : '' }}>
+                                                                        {{ $item->name }} | {{$item->code}}</option>
+                                                                        @endforeach --}}
+                                                                    </select>
+                                                                    @error('city_id')
+                                                                    <div class="form-control-feedback"><small>
+                                                                        <code>{{ $message }}</code> </small>
                                                                     </div>
                                                                     @enderror
                                                                 </div>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <h5>Kecamatan</h5>
+                                                                            <div class="controls">
+                                                                                <input type="text" name="kecamatan" class="form-control @error('kecamatan') is-invalid @enderror" value="{{ old('kecamatan') }}" placeholder=" Kecamatan">
+                                                                            </div>
+                                                                            <div class="form-control-feedback">
+                                                                                <small><code> Kecamatan </code></small>
+                                                                            </div>
+                                                                            @error('kecamatan')
+                                                                            <div class="form-control-feedback"><small>
+                                                                                <code>{{ $message }}</code> </small>
+                                                                            </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <h5>Kab./ Kota</h5>
+                                                                            <div class="controls">
+                                                                                <input type="text" name="kabupaten" class="form-control @error('kabupaten') is-invalid @enderror" value="{{ old('kabupaten') }}" placeholder=" Kab./ Kota">
+                                                                            </div>
+                                                                            <div class="form-control-feedback">
+                                                                                <small><code> Kab./ Kota </code></small>
+                                                                            </div>
+                                                                            @error('kabupaten')
+                                                                            <div class="form-control-feedback"><small>
+                                                                                <code>{{ $message }}</code> </small>
+                                                                            </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-8">
+                                                                        <div class="form-group">
+                                                                            <h5>Provinsi</h5>
+                                                                            <div class="controls">
+                                                                                <input type="text" name="provinsi" class="form-control @error('provinsi') is-invalid @enderror" value="{{ old('provinsi') }}" placeholder=" Provinsi">
+                                                                            </div>
+                                                                            <div class="form-control-feedback">
+                                                                                <small><code> Provinsi </code></small>
+                                                                            </div>
+                                                                            @error('provinsi')
+                                                                            <div class="form-control-feedback"><small>
+                                                                                <code>{{ $message }}</code> </small>
+                                                                            </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <div class="form-group">
+                                                                            <h5>Kode Pos</h5>
+                                                                            <div class="controls">
+                                                                                <input type="text" name="kode_pos" class="form-control @error('kode_pos') is-invalid @enderror" value="{{ old('kode_pos') }}" placeholder=" Kode Pos">
+                                                                            </div>
+                                                                            <div class="form-control-feedback">
+                                                                                <small><code> Kode Pos </code></small>
+                                                                            </div>
+                                                                            @error('kode_pos')
+                                                                            <div class="form-control-feedback"><small>
+                                                                                <code>{{ $message }}</code> </small>
+                                                                            </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="maps7" role="tabpanel">
-                                            <div class="p-15">
-                                                <div class="row">
-                                                    <div class="box">
-                                                        <div class="box-body">
-                                                            <div class="row">
-                                                                <div class="col-6">
-                                                                    <div class="form-group">
-                                                                        <h5>Lintang</h5>
-                                                                        <div class="controls">
-                                                                            <input type="text" name="lintang" class="form-control @error('lintang') is-invalid @enderror" value="{{ old('lintang') }}" placeholder=" Lintang">
-                                                                        </div>
-                                                                        <div class="form-control-feedback">
-                                                                            <small><code> Lintang  </code></small>
-                                                                        </div>
-                                                                        @error('lintang')
-                                                                        <div class="form-control-feedback"><small>
-                                                                            <code>{{ $message }}</code> </small>
-                                                                        </div>
-                                                                        @enderror
+                                                <div class="tab-pane" id="logo7" role="tabpanel">
+                                                    <div class="p-15">
+                                                        <div class="row">
+                                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                                <div class="box h-300">
+                                                                    <div class="box-header">
+                                                                        <h4 class="box-title">
+                                                                            Logo
+                                                                        </h4>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-6">
-                                                                    <div class="form-group">
-                                                                        <h5>Bujur</h5>
-                                                                        <div class="controls">
-                                                                            <input type="text" name="bujur" class="form-control @error('bujur') is-invalid @enderror" value="{{ old('bujur') }}" placeholder=" Bujur">
+                                                                    <div class="text-center box-body ">
+                                                                        <label class="form-label">Size : 600 pixel x 400 pixel</label>
+                                                                        <div class="form-group">
+                                                                            <div class=" fileinput fileinput-new" data-provides="fileinput">
+                                                                                <div class="fileinput-new img-thumbnail" style="width: 200px;">
+                                                                                    <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
+                                                                                </div>
+                                                                                <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
+                                                                                <div>
+                                                                                    <span class="btn btn-outline-secondary btn-file">
+                                                                                        <span class="fileinput-new">
+                                                                                            Select image
+                                                                                        </span>
+                                                                                        <span class="fileinput-exists">Change</span>
+                                                                                        <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}"></span>
+                                                                                        <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @error('logo_sekolah')
+                                                                                <div class="form-control-feedback">
+                                                                                    <small> <code>{{ $message }}</code> </small>
+                                                                                </div>
+                                                                                @enderror
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="form-control-feedback">
-                                                                            <small><code> Bujur  </code></small>
-                                                                        </div>
-                                                                        @error('bujur')
-                                                                        <div class="form-control-feedback"><small>
-                                                                            <code>{{ $message }}</code> </small>
-                                                                        </div>
-                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <h5>Maps Script</h5>
-                                                                <div class="controls">
-                                                                    <textarea rows="5" name="maps" class="form-control @error('maps') is-invalid @enderror" placeholder="maps">{{ old('maps') }} </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane" id="maps7" role="tabpanel">
+                                                        <div class="p-15">
+                                                            <div class="row">
+                                                                <div class="box">
+                                                                    <div class="box-body">
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <h5>Lintang</h5>
+                                                                                    <div class="controls">
+                                                                                        <input type="text" name="lintang" class="form-control @error('lintang') is-invalid @enderror" value="{{ old('lintang') }}" placeholder=" Lintang">
+                                                                                    </div>
+                                                                                    <div class="form-control-feedback">
+                                                                                        <small><code> Lintang  </code></small>
+                                                                                    </div>
+                                                                                    @error('lintang')
+                                                                                    <div class="form-control-feedback"><small>
+                                                                                        <code>{{ $message }}</code> </small>
+                                                                                    </div>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <h5>Bujur</h5>
+                                                                                    <div class="controls">
+                                                                                        <input type="text" name="bujur" class="form-control @error('bujur') is-invalid @enderror" value="{{ old('bujur') }}" placeholder=" Bujur">
+                                                                                    </div>
+                                                                                    <div class="form-control-feedback">
+                                                                                        <small><code> Bujur  </code></small>
+                                                                                    </div>
+                                                                                    @error('bujur')
+                                                                                    <div class="form-control-feedback"><small>
+                                                                                        <code>{{ $message }}</code> </small>
+                                                                                    </div>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <h5>Maps Script</h5>
+                                                                            <div class="controls">
+                                                                                <textarea rows="5" name="maps" class="form-control @error('maps') is-invalid @enderror" placeholder="maps">{{ old('maps') }} </textarea>
+                                                                            </div>
+                                                                            <div class="form-control-feedback">
+                                                                                <small>
+                                                                                    Exp:
+                                                                                    <code>
+                                                                                        https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
+                                                                                    </code>
+                                                                                </small>
+                                                                            </div>
+                                                                            @error('maps')
+                                                                            <div class="form-control-feedback">
+                                                                                <small> <code>{{ $message }}</code> </small>
+                                                                            </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="form-control-feedback">
-                                                                    <small>
-                                                                        Exp:
-                                                                        <code>
-                                                                            https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
-                                                                        </code>
-                                                                    </small>
-                                                                </div>
-                                                                @error('maps')
-                                                                <div class="form-control-feedback">
-                                                                    <small> <code>{{ $message }}</code> </small>
-                                                                </div>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
@@ -451,51 +508,92 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </section>
+                                </form>
+                            </section>
 
-                @push('styles')
-                <!-- Jasny Bootstrap 4 -->
-                <link rel="stylesheet"
-                href="{{ asset('') }}assets/vendor_plugins/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
-                @endpush
+                            @push('styles')
+                            <!-- Jasny Bootstrap 4 -->
+                            <link rel="stylesheet"
+                            href="{{ asset('') }}assets/vendor_plugins/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
+                            @endpush
 
-                @push('scripts')
-                <script src="{{ asset('') }}assets/vendor_plugins/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
-                <script src="{{ asset('') }}assets/vendor_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-                <script src="{{ asset('') }}assets/vendor_components/select2/dist/js/select2.full.js"></script>
-                <script src="{{ asset('') }}assets/vendor_components/ckeditor/ckeditor.js"></script>
-                <script src="{{ asset('') }}assets/vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
+                            @push('scripts')
+                            <script src="{{ asset('') }}assets/vendor_plugins/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
+                            <script src="{{ asset('') }}assets/vendor_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+                            <script src="{{ asset('') }}assets/vendor_components/select2/dist/js/select2.full.js"></script>
+                            <script src="{{ asset('') }}assets/vendor_components/ckeditor/ckeditor.js"></script>
+                            <script src="{{ asset('') }}assets/vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
 
-                <script>
-                    var options = {
-                        filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
-                        filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{ csrf_token() }}',
-                        filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
-                        filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{ csrf_token() }}'
-                    };
-                </script>
-                <script>
-                    CKEDITOR.replace('editor1', options);
-                    //Initialize Select2 Elements
-                    $('.select2').select2();
+                            <script>
+                                var options = {
+                                    filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+                                    filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{ csrf_token() }}',
+                                    filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+                                    filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{ csrf_token() }}'
+                                };
+                            </script>
+                            <script>
+                                CKEDITOR.replace('editor1', options);
+                                //Initialize Select2 Elements
+                                $('.select2').select2();
 
-                    //Save Draft
-                    $('#draft-btn').click(function(e) {
-                        e.preventDefault();
-                        $('#status_yayasan_update').val(0);
-                        $('#post-form').submit();
-                    });
-                    //Save Publish
-                    $('#publish-btn').click(function(e) {
-                        e.preventDefault();
-                        $('#status_yayasan_update').val(1);
-                        $('#fresh_site').val(1);
-                        $('#post-form').submit();
-                    });
-                </script>
-                @endpush
-                @endsection
+                                //Save Draft
+                                $('#draft-btn').click(function(e) {
+                                    e.preventDefault();
+                                    $('#status_yayasan_update').val(0);
+                                    $('#post-form').submit();
+                                });
+                                //Save Publish
+                                $('#publish-btn').click(function(e) {
+                                    e.preventDefault();
+                                    $('#status_yayasan_update').val(1);
+                                    $('#fresh_site').val(1);
+                                    $('#post-form').submit();
+                                });
+                            </script>
+                            <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $('select[name="province_code__"]').on('change', function() {
+                                            var province_code = $(this).val();
+                                            if (province_code) {
+                                                $.ajax({
+                                                    url: "{{ url('/backend/get/city/') }}/"+ province_code,
+                                                    type: "GET",
+                                                    dataType: "json",
+                                                    success: function(data) {
+                                                        $("#city_id").empty();
+                                                        $("#city_id").removeAttr("disabled")
+                                                        $.each(data, function(key, value) {
+                                                            $("#city_id").append('<option value="' +
+                                                            value.id + '">' + value.name + '</option>');
+                                                        });
+                                                        console.log(data)
+                                                    },
+
+                                                });
+                                            } else {
+                                                alert('danger');
+                                            }
+                                        });
+                                    });
+
+                                </script>
+                                <script>
+                                    document.getElementById('selcetprovince_code').addEventListener('change', function() {
+                                        var provinceId = this.value;
+                                        fetch(`/cities/${provinceId}`)
+                                        .then(response => response.json())
+                                        .then(cities => {
+                                            var citySelect = document.getElementById('citySelect');
+                                            citySelect.innerHTML = ''; // Clear existing options
+                                            cities.forEach(city => {
+                                                var option = document.createElement('option');
+                                                option.value = city.id;
+                                                option.textContent = city.name;
+                                                citySelect.appendChild(option);
+                                            });
+                                        });
+                                    });
+                                </script>
+                            @endpush
+                            @endsection

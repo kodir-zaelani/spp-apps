@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Yayasan extends Model
 {
     use HasFactory, HasUuids;
+    use SoftDeletes;
 
     protected $table        = 'yayasan';
     protected $primaryKey   = 'id';
