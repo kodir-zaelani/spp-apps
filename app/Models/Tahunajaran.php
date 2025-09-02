@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tahunajaran extends Model
@@ -29,5 +30,15 @@ class Tahunajaran extends Model
         if ($this->periode_aktif == 1) {
         return '<span class="badge badge-success">Aktif</span>';
         }
+    }
+
+    /**
+     * Get all of the jenistagihans for the Tahunajaran
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jenistagihans(): HasMany
+    {
+        return $this->hasMany(Jenistagihan::class);
     }
 }

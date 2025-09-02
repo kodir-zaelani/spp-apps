@@ -30,4 +30,14 @@ class Semester extends Model
         return '<span class="badge badge-success">Aktif</span>';
         }
     }
+
+    /**
+     * Get the tahunajaran that owns the Semester
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tahunajaran(): BelongsTo
+    {
+        return $this->belongsTo(Tahunajaran::class);
+    }
 }

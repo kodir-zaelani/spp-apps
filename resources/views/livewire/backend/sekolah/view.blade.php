@@ -30,7 +30,7 @@
                                     <div class=" fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new img-thumbnail" style="width: 200px;">
                                             <img src="{{ $sekolah->logosekolahThumbUrl ? $sekolah->logosekolahThumbUrl : '/uploads/images/default/no_image.png' }}" alt="...">
-                                            {{-- <img src="{{ asset('') }}assets/images/no_image.png" alt="..."> --}}
+                                            {{-- <img src="{{ asset('') }}assets/images/no_image.pncreate')g" alt="..."> --}}
                                         </div>
                                         <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
                                         <div>

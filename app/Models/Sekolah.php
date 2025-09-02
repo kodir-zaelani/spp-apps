@@ -74,4 +74,14 @@ class Sekolah extends Model
         $this->attributes['nama'] = $value;
         $this->attributes['slug'] = $this->generateSlug($value);
     }
+
+    /**
+     * Get all of the jenistagihans for the Tahunajaran
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jenistagihans(): HasMany
+    {
+        return $this->hasMany(Jenistagihan::class);
+    }
 }

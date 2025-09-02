@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Livewire\Backend\Tahunajaran;
+namespace App\Livewire\Backend\Jenistagihan;
 
 use Livewire\Component;
 use App\Models\Tahunajaran;
+use App\Models\Jenistagihan;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -18,11 +19,13 @@ class Index extends Component
     public $selectPage    = false;
     public $selectAll     = false;
     public $sortDirection = 'desc';
-    public $sortColumn    = 'tahun_ajaran_id';
-    public $statusUpdate  = false;
+    public $sortColumn    = 'created_at';
     public $headersTable;
     public $action;
     public $selectedItem;
+
+    public $statusUpdate  = false;
+    public $statusCreate  = false;
 
 
     protected $queryString = [
@@ -34,11 +37,11 @@ class Index extends Component
     private function headerConfig()
     {
         return [
-            'tahun_ajaran_id' => 'Tahun Ajaran',
-            'nama'            => 'Nama',
-            'periode_aktif'   => 'Status Aktif',
-            'tanggal_mulai'   => 'Tanggal Mulai',
-            'tanggal_selesai' => 'Tanggal Selesai',
+            'tahunajaran_id' => 'Tahun Ajaran',
+            'nama'           => 'Nama',
+            'periodik'       => 'Periodik',
+            'jenis_periodik' => 'Jenis Periodik',
+            'besaran'        => 'Besaran',
         ];
     }
 
@@ -75,21 +78,21 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function getTahunajaranQueryProperty()
+    public function getJenistagihanQueryProperty()
     {
-        return Tahunajaran::orderBy($this->sortColumn, $this->sortDirection)
+        return Jenistagihan::orderBy($this->sortColumn, $this->sortDirection)
         ->search(trim($this->search)); //search menggunakan scopeSearch di model
     }
 
-    public function getTahunajaranProperty()
+    public function getJenistagihanProperty()
     {
-        return $this->tahunajaranQuery->paginate($this->paginate);
+        return $this->jenistagihanQuery->paginate($this->paginate);
     }
 
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->tahunajaran->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->jenistagihan->pluck('id')->map(fn ($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -103,7 +106,7 @@ class Index extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->tahunajaranQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->jenistagihanQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     }
 
     public function isChecked($id)
@@ -111,6 +114,16 @@ class Index extends Component
         return in_array($id, $this->checked);
     }
 
+    public function addtagihan()
+    {
+        $this->statusUpdate  = false;
+        $this->statusCreate  = true;
+    }
+    public function canceladdtagihan()
+    {
+        $this->statusUpdate  = false;
+        $this->statusCreate  = false;
+    }
 
     public function selectItem($itemId, $action)
     {
@@ -131,7 +144,7 @@ class Index extends Component
 
     public function deleteRecords()
     {
-        Tahunajaran::whereKey($this->checked)->delete();
+        Jenistagihan::whereKey($this->checked)->delete();
 
         $this->checked = [];
         $this->selectAll = false;
@@ -154,14 +167,14 @@ class Index extends Component
     // Delete Single Record
     public function delete()
     {
-        Tahunajaran::destroy($this->selectedItem);
+        Jenistagihan::destroy($this->selectedItem);
 
         // Sweet alert
         $this->dispatch('swal:modal', [
             'title' => 'Deleted Success!',
             'timer' => 4000,
             'icon'  => 'success',
-            'text'  => 'Tahunajaran was deleted',
+            'text'  => 'Jenistagihan was deleted',
             // 'toast'=>true, // Jika mau menggunakan toas
             // 'position'=>'top-right', // Jika mau menggunakan toas
             'showConfirmButton' => true,
@@ -177,9 +190,10 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.backend.tahunajaran.index', [
-            'datatahunajaran' => $this->tahunajaran,
-            'title' => 'Tahun Ajaran',
+        return view('livewire.backend.jenistagihan.index', [
+            'datajenistagihan' => $this->jenistagihan,
+            'dataptahunajaran' => Tahunajaran::with('jenistagihans')->orderBy('tahun_ajaran_id', 'desc')->get(),
+            'title' => 'Jenis Tagihan',
         ]);
     }
 

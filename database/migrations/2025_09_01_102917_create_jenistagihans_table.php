@@ -16,9 +16,12 @@ return new class extends Migration
             $table->foreignUuid('sekolah_id');
             $table->foreignUuid('tahunajaran_id');
             $table->string('nama');
-            $table->enum('kategori', ['down_payment', 'full_payment'])->nullable();
+            $table->boolean('periodik')->default(false);
+            $table->enum('jenis_periodik', ['bulan', 'tahun_ajaran'])->nullable();
+            $table->boolean('perlu_tagihan')->default(false);
             $table->unsignedInteger('besaran');
             $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('sekolah_id')->references('id')->on('sekolah')->onUpdate('CASCADE')->onDelete('CASCADE');

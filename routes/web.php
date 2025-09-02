@@ -104,5 +104,8 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
     // SemesterController
     Route::get('backend/semester', [App\Http\Controllers\Backend\SemesterController::class, 'index'])->name('backend.semester.index');
 
+    // SemesterController
+    Route::get('backend/jenistagihan', [App\Http\Controllers\Backend\JenistagihanController::class, 'index'])->name('backend.jenistagihan.index');
+
 
 });

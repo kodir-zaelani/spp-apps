@@ -3,7 +3,27 @@
         <h4 class="box-tile">Tambah data</h4>
     </div>
     <div class="box-body">
-
+ <div class="row">
+            <div class="col-12">
+               <div class="box box-bordered border-success">
+                <div class="box-body">
+                     <form action="{{ route('backend.yayasan.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
+                    @error('importfile')
+                    <div class="form-control-feedback">
+                        <small> <code>{{ $message }}</code> </small>
+                    </div>
+                    @enderror
+                    <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
+                </form>
+                <div class="py-20">
+                    Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1_template_yayasan.xlsx" >Template</a>
+                </div>
+                </div>
+               </div>
+            </div>
+        </div>
         <ul class="nav nav-tabs customtab2" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#home7" role="tab"><span class="hidden-sm-up">
