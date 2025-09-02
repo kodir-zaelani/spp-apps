@@ -24,7 +24,6 @@ class JenistagihansTable
                     ->searchable(),
                 IconColumn::make('periodik')
                     ->boolean(),
-                TextColumn::make('jenis_periodik'),
                 IconColumn::make('perlu_tagihan')
                     ->boolean(),
                 TextColumn::make('besaran')
