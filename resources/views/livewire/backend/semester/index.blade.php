@@ -65,7 +65,7 @@
                                                 <tr>
                                                     <th class="text-right" scope="row">{{ $no + $datasemester->firstItem() }}</th>
                                                     <td>
-                                                        {{ !empty($item->semester_id) ? $item->semester_id:'' }}
+                                                        {{ !empty($item->semesterid) ? $item->semesterid:'' }}
                                                     </td>
                                                     <td>
                                                         {{ !empty($item->tahun_ajaran_id) ? $item->tahun_ajaran_id:'' }}
