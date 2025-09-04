@@ -18,7 +18,7 @@ class Index extends Component
     public $selectPage    = false;
     public $selectAll     = false;
     public $sortDirection = 'desc';
-    public $sortColumn    = 'semester_id';
+    public $sortColumn    = 'semesterid';
     public $statusUpdate  = false;
     public $headersTable;
     public $action;
@@ -34,7 +34,7 @@ class Index extends Component
     private function headerConfig()
     {
         return [
-            'semester_id'     => 'Semester Id',
+            'semesterid'     => 'Semester Id',
             'tahun_ajaran_id' => 'Tahun Ajaran',
             'nama'            => 'Nama',
             'semester'        => 'Semester',
