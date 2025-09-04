@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('semester', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('semester_id', 5);
+            $table->string('semesterid', 5);
             $table->decimal('tahun_ajaran_id', 4, 0);
             $table->string('nama');
             $table->decimal('semester', 1, 0);
