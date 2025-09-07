@@ -11,7 +11,7 @@ class Agama extends Model
 
     protected $table        = 'agama';
     protected $guarded    = [];
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'agama_id';
 
     public function scopeSearch($query, $term)
     {

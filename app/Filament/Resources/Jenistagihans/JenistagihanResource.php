@@ -9,6 +9,7 @@ use App\Filament\Resources\Jenistagihans\Schemas\JenistagihanForm;
 use App\Filament\Resources\Jenistagihans\Tables\JenistagihansTable;
 use App\Models\Jenistagihan;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,10 @@ class JenistagihanResource extends Resource
 {
     protected static ?string $model = Jenistagihan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CreditCard;
+
+    protected static ?string $navigationLabel = 'Jenis Tagihan';
+    protected static string | UnitEnum | null $navigationGroup = 'Master';
 
     protected static ?string $recordTitleAttribute = 'Jenis Tagihan';
 

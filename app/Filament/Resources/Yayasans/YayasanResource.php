@@ -9,6 +9,7 @@ use App\Filament\Resources\Yayasans\Schemas\YayasanForm;
 use App\Filament\Resources\Yayasans\Tables\YayasansTable;
 use App\Models\Yayasan;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,9 @@ class YayasanResource extends Resource
 {
     protected static ?string $model = Yayasan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
+    protected static ?string $navigationLabel = 'Yayasan';
+    protected static string | UnitEnum | null $navigationGroup = 'Lembaga';
 
     protected static ?string $recordTitleAttribute = 'Yayasan';
 
