@@ -11,8 +11,12 @@
                                     <i class="fa fa-home"><span class="path1"></span><span class="path2"></span></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item" aria-current="page">Sekolah</li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ $title}}</li>
+                            <li class="breadcrumb-item" aria-current="page">
+                                <a href="{{ route('backend.sekolah.index') }}">
+                                Satuan Pendidikan
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">List</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,14 +28,56 @@
         <div class="row">
             <div class="col-xl-12 col-md-12 col-lg-12 col-12">
                 <div class="box box-bordered border-primary">
-                    @if (empty($sekolah))
-                    @include('livewire.backend.sekolah.view')
-                    @else
-                    @if ($statusUpdate == true)
-                    @include('livewire.backend.sekolah.edit')
-                    @elseif ($statusUpdate == false)
+                    <div class="box-header with-border">
+                        @if ($statusCreate == true)
+                        <h4 class="box-tile">Tambah Data</h4>
+                        <div class="box-controls pull-right">
+                            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
+                        </div>
+                        @elseif ($statusUpdate == true)
+                        <h4 class="box-tile">Edit Data</h4>
+                        <div class="box-controls pull-right">
+                            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
+                        </div>
+                        @elseif ($statusView == true)
+                        <h4 class="box-tile">{{$sekolah->nama}}</h4>
+                        <div class="box-controls pull-right">
+                            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
+                            <button wire:click="edit('{{ $sekolah->id }}')" class="btn btn-sm btn-warning me-3" title="Edit"><i class="fa fa-edit "></i> Edit</button>
+                            <a href="{{route('backend.sekolah.export')}}" class="btn btn-sm btn-success me-3" title="Export"><i class="fa fa-file "></i> Export</a>
+                        </div>
+                        @else
+                        <div class="row">
+                            <div class=" col-xl-3 col-lg-3 col-md-3 col-12">
+                                <select wire:model.live="paginate" name="" id="" class="w-auto form-control-sm custom-select">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <a class="btn btn-sm btn-primary ms-3"  href="{{ route('backend.sekolah.create')}}" style="pointer='cursor';">
+                                    <i class="bi bi-plus-circle-fill me-2"></i>
+                                    Add
+                                </a>
+                            </div>
+                            <div class=" ms-auto col-md-5 col-lg-5 col-12">
+                                <div class="form-group">
+                                    <div class="mb-3 input-group">
+                                        <input type="search" wire:model.live.debounce.500ms="search" class="form-control" wire:keydown.escape="resetSearch" wire:keydown.tab="resetSearch" class="float-right form-control" placeholder="Search by ...">
+                                        <span class="input-group-text"><i class="ti-search"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @if ($statusCreate == true)
                     @include('livewire.backend.sekolah.create')
-                    @endif
+                    @elseif ($statusUpdate == true)
+                    @include('livewire.backend.sekolah.edit')
+                    @else
+                    @include('livewire.backend.sekolah.list')
                     @endif
                 </div>
             </div>

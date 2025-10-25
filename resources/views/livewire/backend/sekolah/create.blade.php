@@ -1,29 +1,27 @@
 <div>
-    <div class="box-header with-border">
-        <h4 class="box-tile">Tambah data</h4>
-    </div>
+
     <div class="box-body">
- <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
-               <div class="box box-bordered border-success">
-                <div class="box-body">
-                     <form action="{{ route('backend.yayasan.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
-                    @error('importfile')
-                    <div class="form-control-feedback">
-                        <small> <code>{{ $message }}</code> </small>
+                <div class="box box-bordered border-success">
+                    <div class="box-body">
+                        <form action="{{ route('backend.yayasan.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="importfile" class="form-control @error('importfile') is-invalid @enderror" required>
+                            @error('importfile')
+                            <div class="form-control-feedback">
+                                <small> <code>{{ $message }}</code> </small>
+                            </div>
+                            @enderror
+                            <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
+                        </form>
+                        <div class="py-20">
+                            Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1_template_yayasan.xlsx" >Template</a>
+                        </div>
                     </div>
-                    @enderror
-                    <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
-                </form>
-                <div class="py-20">
-                    Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1_template_yayasan.xlsx" >Template</a>
                 </div>
-                </div>
-               </div>
             </div>
-        </div>
+        </div> --}}
         <ul class="nav nav-tabs customtab2" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#home7" role="tab"><span class="hidden-sm-up">
@@ -42,7 +40,8 @@
                     <div class="box">
                         <form enctype="multipart/form-data" >
                             <div class="box-body">
-                                 <div class="row">
+
+                                <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <h5>NPSN <span class="text-danger">*</span></h5>
@@ -84,6 +83,100 @@
                                     @error('nama')
                                     <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
                                     @enderror
+                                </div>
+                                 <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group @error('bentukpendidikan_id') has-error @enderror">
+                                            <h5 >Bentuk Pendidikan <span class="text-danger">*</span></h5>
+                                            <select class="form-control select2" style="width: 100%;" wire:model.live="bentukpendidikan_id" id="bentukpendidikan_id">
+                                                <option value="" holder>Pilih Bentuk Pendidikan</option>
+                                                @foreach ($databentukpendidikan as $item)
+                                                <option value="{{ $item->id }}" {{ old('bentukpendidikan_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->nama }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('bentukpendidikan_id')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group @error('jenjangpendidikan_id') has-error @enderror">
+                                            <h5 >Jenjang Pendidikan <span class="text-danger">*</span></h5>
+                                            <select class="form-control select2" style="width: 100%;" wire:model.live="jenjangpendidikan_id">
+                                                <option value="" holder>Pilih Jenjang Pendidikan</option>
+                                                @foreach ($datajenjangpendidikan as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->nama }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('jenjangpendidikan_id')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group @error('statuskepemilikan_id') has-error @enderror">
+                                            <h5 >Status Kepemilikan <span class="text-danger">*</span></h5>
+                                            <select class="form-control select2" style="width: 100%;" wire:model.live="statuskepemilikan_id">
+                                                <option value="" holder disabled >Pilih Status Kepemilikan</option>
+                                                @foreach ($datakepemilikan as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->nama }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('jenjangpendidikan_id')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        {{-- <div class="form-group @error('kebutuhankhusus_id') has-error @enderror">
+                                            <h5 >Kebutuhan Khusus <span class="text-danger">*</span></h5>
+                                            <select class="form-control select2" style="width: 100%;" wire:model.live="kebutuhankhusus_id" id="kebutuhankhusus_id">
+                                                <option value="" holder disabled >Pilih Kebutuhan Khusus</option>
+                                                @foreach ($kebutuhankhusus as $item)
+                                                <option value="{{ $item->id }}" {{ old('kebutuhankhusus_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->kebutuhan_khusus }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('kebutuhankhusus_id')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div> --}}
+                                    </div>
+                                    {{-- <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group @error('statuskepemilikan_id') has-error @enderror">
+                                            <h5 >Status Kepemilikan <span class="text-danger">*</span></h5>
+                                            <select class="form-control select2" style="width: 100%;" wire:model.live="statuskepemilikan_id">
+                                                <option value="" holder disabled >Pilih Status Kepemilikan</option>
+                                                @foreach ($datakepemilikan as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->nama }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('jenjangpendidikan_id')
+                                            <div class="form-control-feedback"><small>
+                                                <code>{{ $message }}</code> </small>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div> --}}
                                 </div>
                                 <div class="form-group">
                                     <h5>Nomor SK Pendirian <span class="text-danger">*</span></h5>
@@ -402,3 +495,8 @@
     </div>
 
 </div>
+
+@push('scripts')
+<script src="{{ asset('') }}assets/vendor_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="{{ asset('') }}assets/vendor_components/select2/dist/js/select2.full.js"></script>
+@endpush

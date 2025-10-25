@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Semester extends Model
@@ -28,6 +29,13 @@ class Semester extends Model
         //ADAPUN VALUENYA AKAN MENCETAK HTML BERDASARKAN VALUE DARI FIELD STATUS
         if ($this->periode_aktif == 1) {
         return '<span class="badge badge-success">Aktif</span>';
+        }
+    }
+    public function getPeriodefAttribute()
+    {
+        //ADAPUN VALUENYA AKAN MENCETAK HTML BERDASARKAN VALUE DARI FIELD STATUS
+        if ($this->periode_aktif == 1) {
+        return 'Aktif';
         }
     }
 

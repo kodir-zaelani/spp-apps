@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Agama;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -17,13 +18,22 @@ class AgamaSeeder extends Seeder
         //DB::table('agama')->truncate();
         $json = File::get('database/data/agama.json');
         $data = json_decode($json);
+        // foreach($data as $obj){
+        //     DB::table('agama')->insert([
+        //         'agama_id'   => $obj->id,
+        //         'nama'       => $obj->nama,
+        //         'created_at' => $obj->created_at,
+        //         'updated_at' => $obj->updated_at,
+        //         'deleted_at' => $obj->deleted_at,
+        //     ]);
+        // }
+
         foreach($data as $obj){
-            DB::table('agama')->insert([
+            Agama::create([
                 'agama_id'   => $obj->id,
                 'nama'       => $obj->nama,
-                'created_at' => $obj->created_at,
-                'updated_at' => $obj->updated_at,
-                'deleted_at' => $obj->deleted_at,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

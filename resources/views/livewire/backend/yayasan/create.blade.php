@@ -1,7 +1,4 @@
 <div>
-    <div class="box-header with-border">
-        <h4 class="box-tile">Tambah data</h4>
-    </div>
     <div class="box-body">
         <div class="row">
             <div class="col-12">
@@ -297,9 +294,10 @@
                             </div>
                             <div class="box-footer">
                                 <input type="text" name="status_yayasan_update" value="1" hidden>
-                                <button class="btn btn-sm btn-primary"  wire:click.prevent="store">
+                                <button class="btn btn-sm btn-primary me-3"  wire:click.prevent="store">
                                     <i class="fa fa-save me-2" aria-hidden="true"></i> Save
                                 </button>
+                                 <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
                             </div>
                         </form>
                     </div>

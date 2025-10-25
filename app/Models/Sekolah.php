@@ -15,6 +15,14 @@ class Sekolah extends Model
     protected $primaryKey   = 'id';
     protected $guarded      = [];
 
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('nama', 'like', $term);
+        });
+    }
+
     public function getLogosekolahUrlAttribute($value)
     {
         $logosekolahUrl = "";
@@ -43,7 +51,7 @@ class Sekolah extends Model
         return $logosekolahThumbUrl;
     }
 
- public function province()
+    public function province()
     {
         return $this->belongsTo('Laravolt\Indonesia\Models\Province', 'province_code', 'code');
     }
@@ -63,7 +71,12 @@ class Sekolah extends Model
         return $this->belongsTo('Laravolt\Indonesia\Models\Village', 'village_code', 'code');
     }
 
-     public function generateSlug($nama)
+    public function bentukpendidikan()
+    {
+        return $this->belongsTo(Bentukpendidikan::class, 'bentukpendidikan_id');
+    }
+
+    public function generateSlug($nama)
     {
         return Str::slug($nama);
     }
@@ -76,10 +89,10 @@ class Sekolah extends Model
     }
 
     /**
-     * Get all of the jenistagihans for the Tahunajaran
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    * Get all of the jenistagihans for the Tahunajaran
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
     public function jenistagihans(): HasMany
     {
         return $this->hasMany(Jenistagihan::class);

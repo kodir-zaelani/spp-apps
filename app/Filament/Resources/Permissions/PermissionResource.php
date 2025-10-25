@@ -20,7 +20,7 @@ class PermissionResource extends Resource
     protected static ?string $model = Permission::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::UserMinus;
-protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 4;
     protected static ?string $navigationLabel = 'Permission';
     protected static string | UnitEnum | null $navigationGroup = 'Authentication';
     protected static ?string $recordTitleAttribute = 'Permission';

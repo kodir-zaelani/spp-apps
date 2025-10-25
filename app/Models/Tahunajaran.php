@@ -31,6 +31,13 @@ class Tahunajaran extends Model
         return '<span class="badge badge-success">Aktif</span>';
         }
     }
+    public function getPeriodefAttribute()
+    {
+        //ADAPUN VALUENYA AKAN MENCETAK HTML BERDASARKAN VALUE DARI FIELD STATUS
+        if ($this->periode_aktif == 1) {
+        return 'Aktif';
+        }
+    }
 
     /**
      * Get all of the jenistagihans for the Tahunajaran
@@ -40,5 +47,14 @@ class Tahunajaran extends Model
     public function jenistagihans(): HasMany
     {
         return $this->hasMany(Jenistagihan::class);
+    }
+    /**
+     * Get all of the jenistagihans for the Tahunajaran
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function semesters(): HasMany
+    {
+        return $this->hasMany(Semester::class);
     }
 }

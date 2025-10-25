@@ -54,6 +54,8 @@ class AdminAppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->sidebarFullyCollapsibleOnDesktop();
+            ])
+            ->favicon(asset('uploads/images/logo/favicon_1754709331logo_1675916345Logobpic_thumb.png'))
+            ->sidebarFullyCollapsibleOnDesktop();
     }
 }

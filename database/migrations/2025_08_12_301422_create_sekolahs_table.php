@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('sk_izin_operasional')->nullable();
             $table->date('tanggal_izin_operasional')->nullable();
             $table->string('no_rekening')->nullable();
-            $table->char('bank_id', 3)->nullable();
+            $table->foreignUuid('bank_id')->nullable();
             $table->string('nama_bank')->nullable();
             $table->string('cabang_kcp_unit')->nullable();
             $table->boolean('mbs')->default(false);
@@ -42,9 +42,9 @@ return new class extends Migration
             $table->char('city_code', 4)->nullable();
             $table->char('district_code', 7)->nullable();
             $table->char('village_code', 10)->nullable();
-            $table->char('negara_id', 2)->nullable();
+            $table->foreignUuid('negara_id')->nullable();
             $table->string('kode_pos', 5)->nullable();
-            $table->char('kebutuhan_khusus_id',10)->nullable();
+            $table->foreignUuid('kebutuhankhusus_id')->nullable();
             $table->string('lintang')->nullable();
             $table->string('bujur')->nullable();
             $table->text('maps')->nullable();
@@ -60,9 +60,9 @@ return new class extends Migration
             $table->foreign('jenjangpendidikan_id')->references('id')->on('jenjangpendidikan')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('statuskepemilikan_id')->references('id')->on('statuskepemilikan')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('yayasan_id')->references('id')->on('yayasan')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreign('negara_id')->references('negara_id')->on('negara')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreign('bank_id')->references('bank_id')->on('bank')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreign('kebutuhan_khusus_id')->references('kebutuhan_khusus_id')->on('kebutuhankhusus')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('negara_id')->references('id')->on('negara')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('bank_id')->references('id')->on('bank')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('kebutuhankhusus_id')->references('id')->on('kebutuhankhusus')->onUpdate('cascade')->onDelete('restrict');
 
             $table->foreign('province_code')
             ->references('code')

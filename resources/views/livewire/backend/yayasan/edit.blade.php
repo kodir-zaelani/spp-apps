@@ -1,10 +1,4 @@
 <div>
-    <div class="box-header with-border">
-        <h4 class="box-tile">Edit Data</h4>
-        <div class="box-controls pull-right">
-            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
-        </div>
-    </div>
     <div class="box-body">
 
         <div class="row">
@@ -14,24 +8,41 @@
                         <div class="widget-user-image">
                             <img class="rounded-circle h-160" src="{{ $yayasan->logoyayasanThumbUrl ? $yayasan->logoyayasanThumbUrl : '/uploads/images/default/no_image.png' }}" alt="{{ $yayasan->nama }}">
                         </div>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="box-body box-profile box-bordered border-success">
-                        <div class="row">
-                            <div class="col-12">
-                                <div>
-                                    <p>Pimpinan :</p>
-                                    <p><span class="text-gray">{{$yayasan->nama}}</span> </p>
-                                    <p>No SK Pendidiran : </p>
-                                    <p><span class="text-gray">{{$yayasan->no_pendirian_yayasan}}</span> </p>
-                                    <p>Tanggal SK Pendirian : </p>
-                                    <p><span class="text-gray">{{$yayasan->tgl_pendirian_yayasan}}</span> </p>
+
+                        <form  enctype="multipart/form-data" action="{{ route('backend.yayasan.updatelogo', $yayasan->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="text-center box-body ">
+                                <label class="form-label">Size : 600 pixel x 400 pixel | 1 MB</label>
+                                <div class="form-group">
+                                    <div class=" fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new img-thumbnail" style="width: 200px;">
+                                            <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
+                                        <div>
+                                            <span class="btn btn-outline-secondary btn-file">
+                                                <span class="fileinput-new"> Select image</span>
+                                                <span class="fileinput-exists">Change</span>
+                                                <input type="file" class="@error('logo_yayasan') is-invalid @enderror" name="logo_yayasan" value="{{ old('logo_yayasan') }}">
+                                            </span>
+                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                        </div>
+                                    </div>
+                                    @error('logo_yayasan')
+                                    <div class="form-control-feedback">
+                                        <small> <code>{{ $message }}</code> </small>
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
-                        </div>
+                            <div class="text-center box-footer">
+                                <button type="submit" class="btn btn-sm btn-primary" >
+                                    <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
+                                </button>
+                            </div>
+                        </form>
                     </div>
-
                 </div>
             </div>
             <div class="col-12 col-lg-7 col-xl-8">
@@ -280,117 +291,117 @@
                                                 </p>
                                                 <button class="btn btn-sm btn-info me-2" wire:click='cancelEdit'>Batal</button>
                                                 <button type="submit" class="btn btn-sm btn-success" wire:click.prevent="ubahdata('{{ $editId }}')"> Perbaharui</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane" id="mapsview" role="tabpanel">
-                    <div class="p-15">
-                        <div class="row">
-                            <div class="box box-bordered border-success">
-                                <form enctype="multipart/form-data" >
-                                    <div class="box-header">
-                                        <button class="btn btn-sm btn-info me-2" wire:click='cancelEdit'>Batal</button>
-                                        <button type="submit" class="btn btn-sm btn-success" wire:click.prevent="ubahpeta('{{ $editId }}')">Perbaharui</button>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <h5>Lintang</h5>
-                                                    <div class="controls">
-                                                        <input type="text" wire:model="lintangedit" class="form-control @error('lintangedit') is-invalid @enderror"  placeholder=" Lintang">
-                                                    </div>
-
-                                                    @error('lintangedit')
-                                                    <div class="form-control-feedback">
-                                                        <small> <code>{{ $message }}</code> </small>
-                                                    </div>
-                                                    @enderror
-                                                </div>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <h5>Bujur</h5>
-                                                    <div class="controls">
-                                                        <input type="text" wire:model="bujuredit" class="form-control @error('bujuredit') is-invalid @enderror"  placeholder=" Bujur">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>Maps Script</h5>
-                                            <div class="controls">
-                                                <textarea rows="5" name="maps_update" class="form-control @error('maps_update') is-invalid @enderror" placeholder="maps_update">{{ old('maps_update') }} </textarea>
-                                            </div>
-                                            <div class="form-control-feedback">
-                                                <small>
-                                                    Exp:
-                                                    <code>
-                                                        https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
-                                                    </code>
-                                                </small>
-                                            </div>
-                                            @error('maps_update')
-                                            <div class="form-control-feedback">
-                                                <small> <code>{{ $message }}</code> </small>
-                                            </div>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>Peta Saat Ini</h5>
-                                            <div class="controls">
-                                                <iframe src="{{$mapsedit}}" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="tab-pane" id="logoview" role="tabpanel">
-                    <div class="p-15">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="tab-pane" id="mapsview" role="tabpanel">
+                        <div class="p-15">
+                            <div class="row">
                                 <div class="box box-bordered border-success">
-                                    <form  enctype="multipart/form-data" action="{{ route('backend.yayasan.updatelogo', $yayasan->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="text-center box-body ">
-                                            <label class="form-label">Size : 600 pixel x 400 pixel</label>
-                                            <div class="form-group">
-                                                <div class=" fileinput fileinput-new" data-provides="fileinput">
-                                                    <div class="fileinput-new img-thumbnail" style="width: 200px;">
-                                                        <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
-                                                    </div>
-                                                    <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
-                                                    <div>
-                                                        <span class="btn btn-outline-secondary btn-file">
-                                                            <span class="fileinput-new"> Select image</span>
-                                                            <span class="fileinput-exists">Change</span>
-                                                            <input type="file" class="@error('logo_yayasan') is-invalid @enderror" name="logo_yayasan" value="{{ old('logo_yayasan') }}">
-                                                        </span>
-                                                        <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                    <form enctype="multipart/form-data" >
+                                        <div class="box-header">
+                                            <button type="submit" class="btn btn-sm btn-success" wire:click.prevent="ubahpeta('{{ $editId }}')">Perbaharui</button>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <h5>Lintang</h5>
+                                                        <div class="controls">
+                                                            <input type="text" wire:model="lintangedit" class="form-control @error('lintangedit') is-invalid @enderror"  placeholder=" Lintang">
+                                                        </div>
+
+                                                        @error('lintangedit')
+                                                        <div class="form-control-feedback">
+                                                            <small> <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                @error('logo_yayasan')
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <h5>Bujur</h5>
+                                                        <div class="controls">
+                                                            <input type="text" wire:model="bujuredit" class="form-control @error('bujuredit') is-invalid @enderror"  placeholder=" Bujur">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <h5>Maps Script</h5>
+                                                <div class="controls">
+                                                    <textarea rows="5" name="maps_update" class="form-control @error('maps_update') is-invalid @enderror" placeholder="maps_update">{{ old('maps_update') }} </textarea>
+                                                </div>
+                                                <div class="form-control-feedback">
+                                                    <small>
+                                                        Exp:
+                                                        <code>
+                                                            https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
+                                                        </code>
+                                                    </small>
+                                                </div>
+                                                @error('maps_update')
                                                 <div class="form-control-feedback">
                                                     <small> <code>{{ $message }}</code> </small>
                                                 </div>
                                                 @enderror
                                             </div>
-                                        </div>
-                                        <div class="text-center box-footer">
-                                            <button type="submit" class="btn btn-sm btn-primary" >
-                                                <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
-                                            </button>
+                                            <div class="form-group">
+                                                <h5>Peta Saat Ini</h5>
+                                                <div class="controls">
+                                                    <iframe src="{{$mapsedit}}" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="logoview" role="tabpanel">
+                        <div class="p-15">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="box box-bordered border-success">
+                                        <form  enctype="multipart/form-data" action="{{ route('backend.yayasan.updatelogo', $yayasan->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="text-center box-body ">
+                                                <label class="form-label">Size : 600 pixel x 400 pixel</label>
+                                                <div class="form-group">
+                                                    <div class=" fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new img-thumbnail" style="width: 200px;">
+                                                            <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
+                                                        <div>
+                                                            <span class="btn btn-outline-secondary btn-file">
+                                                                <span class="fileinput-new"> Select image</span>
+                                                                <span class="fileinput-exists">Change</span>
+                                                                <input type="file" class="@error('logo_yayasan') is-invalid @enderror" name="logo_yayasan" value="{{ old('logo_yayasan') }}">
+                                                            </span>
+                                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                        </div>
+                                                    </div>
+                                                    @error('logo_yayasan')
+                                                    <div class="form-control-feedback">
+                                                        <small> <code>{{ $message }}</code> </small>
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="text-center box-footer">
+                                                <button type="submit" class="btn btn-sm btn-primary" >
+                                                    <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -399,5 +410,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

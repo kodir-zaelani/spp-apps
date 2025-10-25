@@ -17,21 +17,46 @@
                     </div>
                 </div>
                 <div class="box">
-                    <div class="box-body box-profile box-bordered border-success">
-                        <div class="row">
-                            <div class="col-12">
-                                <div>
-                                    <p>Pimpinan :</p>
-                                    <p><span class="text-gray">{{$sekolah->nama}}</span> </p>
-                                    <p>No SK Pendidiran : </p>
-                                    <p><span class="text-gray">{{$sekolah->sk_pendirian_sekolah}}</span> </p>
-                                    <p>Tanggal SK Pendirian : </p>
-                                    <p><span class="text-gray">{{$sekolah->tanggal_pendirian_sekolah}}</span> </p>
+                    <div class="box-body">
+                        <form  enctype="multipart/form-data" action="{{ route('backend.sekolah.updatelogo', $sekolah->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="text-center box-body ">
+                                <label class="form-label">Size : 600 pixel x 400 pixel | 1 MB</label>
+                                <div class="form-group">
+                                    <div class=" fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new img-thumbnail" style="width: 200px;">
+                                            {{-- <img src="{{ $sekolah->logosekolahThumbUrl ? $sekolah->logosekolahThumbUrl : '/uploads/images/default/no_image.png' }}" alt="..."> --}}
+                                            @if ($logo_sekolahedit)
+                                            <img src="{{ asset('')  }}uploads/images/sekolah/{{$logo_sekolahedit}}" alt="...">
+                                            @else
+                                            <img src="{{ asset('') }}uploads/images/default/no_image.png" alt="...">
+                                            @endif
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
+                                        <div>
+                                            <span class="btn btn-outline-secondary btn-file">
+                                                <span class="fileinput-new"> Select image</span>
+                                                <span class="fileinput-exists">Change</span>
+                                                <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}">
+                                            </span>
+                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                        </div>
+                                    </div>
+                                    @error('logo_sekolah')
+                                    <div class="form-control-feedback">
+                                        <small> <code>{{ $message }}</code> </small>
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
-                        </div>
+                            <div class="text-center box-footer">
+                                <button type="submit" class="btn btn-sm btn-primary" >
+                                    <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
+                                </button>
+                            </div>
+                        </form>
                     </div>
-
                 </div>
             </div>
             <div class="col-12 col-lg-7 col-xl-8">
@@ -86,6 +111,27 @@
                                                         <code>{{ $message }}</code> </small>
                                                     </div>
                                                     @enderror
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="example-dusun-input" class="col-sm-3 col-form-label">Bentuk Pendidikan</label>
+                                                    {{-- <div class="col-sm-4">
+                                                        <input class="form-control" type="text" value="{{ !empty($sekolah->bentukpendidikan_id) ? $sekolah->bentukpendidikan->nama:'' }}" disabled>
+                                                    </div> --}}
+                                                    <div class="col-sm-5">
+                                                        <select class="form-control select2" style="width: 100%;" wire:model="bentukpendidikan_idedit" >
+                                                            <option value="" holder>Pilih Bentuk Pendidikan</option>
+                                                            @foreach ($databentukpendidikan as $item)
+                                                            <option value="{{ $item->id }}" {{ old('bentukpendidikan_idedit') == $item->id ? 'selected' : '' }}>
+                                                                {{ $item->nama }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('bentukpendidikan_idedit')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="example-text-input" class="col-sm-3 col-form-label">Website</label>
@@ -189,20 +235,21 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Provinsi</label>
-                                                    <div class="col-sm-4">
+                                                    {{-- <div class="col-sm-4">
 
                                                         <input class="form-control" type="text" value="{{ !empty($sekolah->province_code) ? $sekolah->province->name:'' }}" id="example-dusun-input">
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="col-sm-5">
-                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="provinceCode" >
+                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="province_codeedit" >
                                                             <option value="" holder>Pilih Provinsi</option>
                                                             @foreach ($dataprovinsi as $item)
-                                                            <option value="{{ $item->code }}" {{ old('province_code') == $item->code ? 'selected' : '' }}>
+                                                            <option value="{{ $item->code }}" {{ old('province_codeedit') == $item->code ? 'selected' : '' }}
+                                                                >
                                                                 {{ $item->name }}
                                                             </option>
                                                             @endforeach
                                                         </select>
-                                                        @error('provinceCode')
+                                                        @error('province_codeedit')
                                                         <div class="form-control-feedback"><small>
                                                             <code>{{ $message }}</code> </small>
                                                         </div>
@@ -212,18 +259,18 @@
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Kab./Kota</label>
                                                     <div class="col-sm-4">
-                                                        <input class="form-control" type="text" value="{{!empty($sekolah->city_code) ? $sekolah->city->name :''}}" id="example-dusun-input">
+                                                        <input class="form-control" type="text" value="{{!empty($city_codeedit) ? $city_codeedit->city->name :''}}" id="example-dusun-input">
                                                     </div>
                                                     <div class="col-sm-5">
-                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="cityCode">
+                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="city_codeedit">
                                                             <option value="" holder>Kab./Kota</option>
                                                             @foreach ($datapcity as $city)
-                                                            <option value="{{ $city->code }}" {{ old('city_code') == $item->code ? 'selected' : ''}}>
+                                                            <option value="{{ $city->code }}" {{ old('city_codeedit') == $item->code ? 'selected' : ''}}>
                                                                 {{ $city->name }}
                                                             </option>
                                                             @endforeach
                                                         </select>
-                                                        @error('cityCode')
+                                                        @error('city_codeedit')
                                                         <div class="form-control-feedback"><small>
                                                             <code>{{ $message }}</code> </small>
                                                         </div>
@@ -232,11 +279,11 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Kecamatan</label>
-                                                    <div class="col-sm-4">
+                                                    {{-- <div class="col-sm-4">
                                                         <input class="form-control" type="text" value="{{!empty($sekolah->district_code) ? $sekolah->district->name :''}}" id="example-dusun-input">
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="col-sm-5">
-                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="districtCode">
+                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="district_codeedit">
                                                             <option value="" holder>Kecamatan</option>
                                                             @foreach ($datadistrict as $district)
                                                             <option value="{{ $district->code }}">
@@ -244,7 +291,7 @@
                                                             </option>
                                                             @endforeach
                                                         </select>
-                                                        @error('districtCode')
+                                                        @error('district_codeedit')
                                                         <div class="form-control-feedback"><small>
                                                             <code>{{ $message }}</code> </small>
                                                         </div>
@@ -253,11 +300,11 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="example-dusun-input" class="col-sm-3 col-form-label">Desa/Kelurahan</label>
-                                                    <div class="col-sm-4">
+                                                    {{-- <div class="col-sm-4">
                                                         <input class="form-control" type="text" value="{{!empty($sekolah->village_code) ? $sekolah->village->name :''}}" id="example-dusun-input">
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="col-sm-5">
-                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="villageCode">
+                                                        <select class="form-control select2" style="width: 100%;" wire:model.live="village_codeedit">
                                                             <option value="" holder>Desa/Kelurahan</option>
                                                             @foreach ($datavillage as $village)
                                                             <option value="{{ $village->code }}" >
@@ -265,7 +312,7 @@
                                                             </option>
                                                             @endforeach
                                                         </select>
-                                                        @error('villageCode')
+                                                        @error('village_codeedit')
                                                         <div class="form-control-feedback"><small>
                                                             <code>{{ $message }}</code> </small>
                                                         </div>
@@ -281,117 +328,118 @@
                                                 </p>
                                                 <button class="btn btn-sm btn-info me-2" wire:click='cancelEdit'>Batal</button>
                                                 <button type="submit" class="btn btn-sm btn-success" wire:click.prevent="ubahdata('{{ $editId }}')"> Perbaharui</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane" id="mapsview" role="tabpanel">
-                    <div class="p-15">
-                        <div class="row">
-                            <div class="box box-bordered border-success">
-                                <form enctype="multipart/form-data" >
-                                    <div class="box-header">
-                                        <button class="btn btn-sm btn-info me-2" wire:click='cancelEdit'>Batal</button>
-                                        <button type="submit" class="btn btn-sm btn-success" wire:click.prevent="ubahpeta('{{ $editId }}')">Perbaharui</button>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <h5>Lintang</h5>
-                                                    <div class="controls">
-                                                        <input type="text" wire:model="lintangedit" class="form-control @error('lintangedit') is-invalid @enderror"  placeholder=" Lintang">
-                                                    </div>
-
-                                                    @error('lintangedit')
-                                                    <div class="form-control-feedback">
-                                                        <small> <code>{{ $message }}</code> </small>
-                                                    </div>
-                                                    @enderror
-                                                </div>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <h5>Bujur</h5>
-                                                    <div class="controls">
-                                                        <input type="text" wire:model="bujuredit" class="form-control @error('bujuredit') is-invalid @enderror"  placeholder=" Bujur">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>Maps Script</h5>
-                                            <div class="controls">
-                                                <textarea rows="5" name="maps_update" class="form-control @error('maps_update') is-invalid @enderror" placeholder="maps_update">{{ old('maps_update') }} </textarea>
-                                            </div>
-                                            <div class="form-control-feedback">
-                                                <small>
-                                                    Exp:
-                                                    <code>
-                                                        https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
-                                                    </code>
-                                                </small>
-                                            </div>
-                                            @error('maps_update')
-                                            <div class="form-control-feedback">
-                                                <small> <code>{{ $message }}</code> </small>
-                                            </div>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>Peta Saat Ini</h5>
-                                            <div class="controls">
-                                                <iframe src="{{$mapsedit}}" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="tab-pane" id="logoview" role="tabpanel">
-                    <div class="p-15">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="tab-pane" id="mapsview" role="tabpanel">
+                        <div class="p-15">
+                            <div class="row">
                                 <div class="box box-bordered border-success">
-                                    <form  enctype="multipart/form-data" action="{{ route('backend.sekolah.updatelogo', $sekolah->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="text-center box-body ">
-                                            <label class="form-label">Size : 600 pixel x 400 pixel</label>
-                                            <div class="form-group">
-                                                <div class=" fileinput fileinput-new" data-provides="fileinput">
-                                                    <div class="fileinput-new img-thumbnail" style="width: 200px;">
-                                                        <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
-                                                    </div>
-                                                    <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
-                                                    <div>
-                                                        <span class="btn btn-outline-secondary btn-file">
-                                                            <span class="fileinput-new"> Select image</span>
-                                                            <span class="fileinput-exists">Change</span>
-                                                            <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}">
-                                                        </span>
-                                                        <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                    <form enctype="multipart/form-data" >
+                                        <div class="box-header">
+                                            <button class="btn btn-sm btn-info me-2" wire:click='cancelEdit'>Batal</button>
+                                            <button type="submit" class="btn btn-sm btn-success" wire:click.prevent="ubahpeta('{{ $editId }}')">Perbaharui</button>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <h5>Lintang</h5>
+                                                        <div class="controls">
+                                                            <input type="text" wire:model="lintangedit" class="form-control @error('lintangedit') is-invalid @enderror"  placeholder=" Lintang">
+                                                        </div>
+
+                                                        @error('lintangedit')
+                                                        <div class="form-control-feedback">
+                                                            <small> <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                @error('logo_sekolah')
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <h5>Bujur</h5>
+                                                        <div class="controls">
+                                                            <input type="text" wire:model="bujuredit" class="form-control @error('bujuredit') is-invalid @enderror"  placeholder=" Bujur">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <h5>Maps Script</h5>
+                                                <div class="controls">
+                                                    <textarea rows="5" name="maps_update" class="form-control @error('maps_update') is-invalid @enderror" placeholder="maps_update">{{ old('maps_update') }} </textarea>
+                                                </div>
+                                                <div class="form-control-feedback">
+                                                    <small>
+                                                        Exp:
+                                                        <code>
+                                                            https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
+                                                        </code>
+                                                    </small>
+                                                </div>
+                                                @error('maps_update')
                                                 <div class="form-control-feedback">
                                                     <small> <code>{{ $message }}</code> </small>
                                                 </div>
                                                 @enderror
                                             </div>
-                                        </div>
-                                        <div class="text-center box-footer">
-                                            <button type="submit" class="btn btn-sm btn-primary" >
-                                                <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
-                                            </button>
+                                            <div class="form-group">
+                                                <h5>Peta Saat Ini</h5>
+                                                <div class="controls">
+                                                    <iframe src="{{$mapsedit}}" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="logoview" role="tabpanel">
+                        <div class="p-15">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="box box-bordered border-success">
+                                        <form  enctype="multipart/form-data" action="{{ route('backend.sekolah.updatelogo', $sekolah->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="text-center box-body ">
+                                                <label class="form-label">Size : 600 pixel x 400 pixel</label>
+                                                <div class="form-group">
+                                                    <div class=" fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new img-thumbnail" style="width: 200px;">
+                                                            <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
+                                                        <div>
+                                                            <span class="btn btn-outline-secondary btn-file">
+                                                                <span class="fileinput-new"> Select image</span>
+                                                                <span class="fileinput-exists">Change</span>
+                                                                <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}">
+                                                            </span>
+                                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                        </div>
+                                                    </div>
+                                                    @error('logo_sekolah')
+                                                    <div class="form-control-feedback">
+                                                        <small> <code>{{ $message }}</code> </small>
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="text-center box-footer">
+                                                <button type="submit" class="btn btn-sm btn-primary" >
+                                                    <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -400,5 +448,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

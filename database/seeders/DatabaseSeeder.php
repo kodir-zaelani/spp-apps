@@ -79,6 +79,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(RefSertifikasiISOSeeder::class);
         // $this->call(RefStatusKepemilikanSarprasSeeder::class);
         // $this->call(JenisLembagaSeeder::class);
-        $this->call(AddPermissionSeeder::class);
+        // $this->call(AddPermissionSeeder::class);
     }
 }

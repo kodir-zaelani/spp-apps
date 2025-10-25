@@ -20,7 +20,6 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
     Route::put('backend/users/{user}/update', [App\Http\Controllers\Backend\UserController::class, 'update'])->name('backend.users.update');
     Route::get('backend/users/profile', [App\Http\Controllers\Backend\UserController::class, 'userprofile'])->name('backend.userprofile');
 
-
     // Setting Web
     Route::get('backend/settings', [App\Http\Controllers\Backend\SettingController::class, 'setting'])->name('backend.settings.index');
     Route::post('backend/settings/create', [App\Http\Controllers\Backend\SettingController::class, 'createsetting'])->name('backend.settings.create');
@@ -30,7 +29,7 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
 
     // Yayasan
     Route::get('backend/yayasan', [App\Http\Controllers\Backend\YayasanController::class, 'index'])->name('backend.yayasan.index');
-    Route::post('backend/yayasan/create', [App\Http\Controllers\Backend\YayasanController::class, 'create'])->name('backend.yayasan.create');
+    Route::get('backend/yayasan/create', [App\Http\Controllers\Backend\YayasanController::class, 'create'])->name('backend.yayasan.create');
     Route::post('backend/yayasan/store', [App\Http\Controllers\Backend\YayasanController::class, 'store'])->name('backend.yayasan.store');
     Route::get('backend/yayasan/{yayasan}/edit', [App\Http\Controllers\Backend\YayasanController::class, 'edit'])->name('backend.yayasan.edit');
     Route::put('backend/yayasan/{yayasan}/update', [App\Http\Controllers\Backend\YayasanController::class, 'update'])->name('backend.yayasan.update');
@@ -40,12 +39,17 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
 
     // Sekolah
     Route::get('backend/sekolah', [App\Http\Controllers\Backend\SekolahController::class, 'index'])->name('backend.sekolah.index');
-    Route::post('backend/sekolah/create', [App\Http\Controllers\Backend\SekolahController::class, 'create'])->name('backend.sekolah.create');
+    Route::get('backend/sekolah/create', [App\Http\Controllers\Backend\SekolahController::class, 'create'])->name('backend.sekolah.create');
     Route::post('backend/sekolah/store', [App\Http\Controllers\Backend\SekolahController::class, 'store'])->name('backend.sekolah.store');
     Route::get('backend/sekolah/{sekolah}/edit', [App\Http\Controllers\Backend\SekolahController::class, 'edit'])->name('backend.sekolah.edit');
     Route::put('backend/sekolah/{sekolah}/update', [App\Http\Controllers\Backend\SekolahController::class, 'update'])->name('backend.sekolah.update');
     Route::put('backend/sekolah/{sekolah}/updatelogo', [App\Http\Controllers\Backend\SekolahController::class, 'updatelogo'])->name('backend.sekolah.updatelogo');
     Route::post('backend/sekolah/import', [App\Http\Controllers\Backend\SekolahController::class, 'import'])->name('backend.sekolah.import');
+
+    // Json Data for City, District and Village
+    Route::get('backend/get/city/{province_code}', [App\Http\Controllers\Backend\WilayahController::class, 'getcity'])->name('backend.wilayah.getcity');
+    Route::get('backend/get/distric/{city_code}', [App\Http\Controllers\Backend\WilayahController::class, 'getdistrict'])->name('backend.wilayah.getdistrict');
+    Route::get('backend/get/village/{district_code}', [App\Http\Controllers\Backend\WilayahController::class, 'getvillage'])->name('backend.wilayah.getvillage');
 
     // Permission
     Route::get('backend/permissions/index', [App\Http\Controllers\Backend\PermissionController::class, 'index'])->name('backend.permissions.index');

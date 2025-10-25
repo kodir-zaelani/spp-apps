@@ -24,14 +24,58 @@
         <div class="row">
             <div class="col-xl-12 col-md-12 col-lg-12 col-12">
                 <div class="box box-bordered border-primary">
-                    @if (empty($yayasan))
+                    <div class="box-header with-border">
+                        @if ($statusCreate == true)
+                        <h4 class="box-tile">Tambah Data</h4>
+                        <div class="box-controls pull-right">
+                            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
+                        </div>
+                        @elseif ($statusUpdate == true)
+                        <h4 class="box-tile">Edit Data</h4>
+                        <div class="box-controls pull-right">
+                            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
+                        </div>
+                        @elseif ($statusView == true)
+                        <h4 class="box-tile">Yayasan {{$yayasan->nama}}</h4>
+                        <div class="box-controls pull-right">
+                            <button class="btn btn-sm btn-info" wire:click='cancelEdit'>Batal</button>
+                            <button wire:click="edit('{{ $yayasan->id }}')" class="btn btn-sm btn-warning me-3" title="Edit"><i class="fa fa-edit "></i> Edit</button>
+                            <a href="{{route('backend.yayasan.export')}}" class="btn btn-sm btn-success me-3" title="Export"><i class="fa fa-file "></i> Export</a>
+                        </div>
+                        @else
+                        <div class="mb-2 row">
+                            <div class="mb-2 col-xl-3 col-lg-3 col-md-3 col-12">
+                                <select wire:model.live="paginate" name="" id="" class="w-auto form-control-sm custom-select">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <button class="btn btn-sm btn-primary ms-3"  wire:click="createData">
+                                    <i class="bi bi-plus-circle-fill me-2"></i>
+                                    Add
+                                </button>
+                            </div>
+                            <div class="mb-2 ms-auto col-md-5 col-lg-5 col-12 ">
+                                <div class="form-group">
+                                    <div class="mb-3 input-group">
+                                        <input type="search" wire:model.live.debounce.500ms="search" class="form-control" wire:keydown.escape="resetSearch" wire:keydown.tab="resetSearch" class="float-right form-control" placeholder="Search by ...">
+                                        <span class="input-group-text"><i class="ti-search"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @if ($statusCreate == true)
                     @include('livewire.backend.yayasan.create')
-                    @else
-                    @if ($statusUpdate == true)
+                    @elseif ($statusUpdate == true)
                     @include('livewire.backend.yayasan.edit')
-                    @elseif ($statusUpdate == false)
+                    @elseif ($statusView == true)
                     @include('livewire.backend.yayasan.view')
-                    @endif
+                    @else
+                    @include('livewire.backend.yayasan.list')
                     @endif
                 </div>
             </div>

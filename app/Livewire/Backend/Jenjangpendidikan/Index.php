@@ -18,7 +18,7 @@ class Index extends Component
     public $selectPage    = false;
     public $selectAll     = false;
     public $sortDirection = 'asc';
-    public $sortColumn    = 'sort_jenjangpendidikan';
+    public $sortColumn    = 'jenjang_pendidikan_id';
     public $statusUpdate  = false;
     public $headersTable;
     public $action;

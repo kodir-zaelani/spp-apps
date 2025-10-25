@@ -17,6 +17,12 @@ use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
 class Index extends Component
 {
     use WithFileUploads;
+    public $headersTable;
+    public $currentPage   = 1;
+    public $paginate      = 10;
+    public $search        = '';
+    public $checked       = [];
+    public $selectPage    = false;
     public $yayasanid;
     public $nama;
     public $alamat;
@@ -63,6 +69,10 @@ class Index extends Component
 
     public $selectedItem;
     public $statusUpdate  = false;
+    public $statusCreate  = false;
+    public $statusView  = false;
+    public $sortDirection = 'asc';
+    public $sortColumn    = 'nama';
 
     public $uploadPath= 'uploads/images/logo';
 
@@ -117,10 +127,10 @@ class Index extends Component
     }
 
 
-    public function edit($yayasanID)
+    public function edit($sekolahID)
     {
         $this->statusUpdate = true;
-        $this->modelId = $yayasanID;
+        $this->modelId = $sekolahID;
 
         $model = Yayasan::find($this->modelId);
 
@@ -147,9 +157,35 @@ class Index extends Component
 
     }
 
+    public function createData()
+    {
+        $this->statusUpdate = false;
+        $this->statusCreate = true;
+        $this->statusList = false;
+        $this->statusView = false;
+    }
+    public function view()
+    {
+        $this->statusUpdate = false;
+        $this->statusCreate = false;
+        $this->statusList = false;
+        $this->statusView = true;
+    }
+
     public function cancelEdit()
     {
         $this->statusUpdate = false;
+        $this->statusCreate = false;
+        $this->statusList = true;
+        $this->statusView = false;
+    }
+
+    public function cancelAdd()
+    {
+        $this->statusUpdate = false;
+        $this->statusCreate = false;
+        $this->statusList = true;
+        $this->statusView = false;
     }
 
     public function ubahpeta($editId)
@@ -300,11 +336,78 @@ class Index extends Component
             }
         }
     }
+ protected $queryString = [
+        // Keeping A Clean Query String https://laravel-livewire.com/docs/2.x/query-string#clean-query-string
+        'search'      => ['except' => ''],
+        'currentPage' => ['except' => 1]
+    ];
 
+    private function headerConfig()
+    {
+        return [
+            'nama'           => 'Nama',
+            'province_code ' => 'Provinsi',
+            'city_code  '    => 'Kota/Kab.',
+        ];
+    }
+
+    public function sortBy($column)
+    {
+        $this->sortColumn = $column;
+
+        $this->sortDirection = $this->reverseSort();
+
+    }
+
+    public function reverseSort()
+    {
+        return $this->sortDirection === 'asc'
+        ? 'desc'
+        : 'asc';
+    }
+
+    public function mount()
+    {
+        $this->fill(request()->only('search', 'currentPage'));
+        $this->resetSearch();
+        $this->headersTable = $this->headerConfig();
+
+    }
+
+    public function resetSearch()
+    {
+        $this->search = '';
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function getYayasanQueryProperty()
+    {
+        return Yayasan::orderBy($this->sortColumn, $this->sortDirection)
+        ->search(trim($this->search)); //search menggunakan scopeSearch di model
+    }
+
+    public function getYayasanProperty()
+    {
+        return $this->yayasanQuery->paginate($this->paginate);
+    }
+
+    public function updatedSelectPage($value)
+    {
+        if ($value) {
+            $this->checked = $this->yayasan->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        } else {
+            $this->checked = [];
+        }
+    }
     public function render()
     {
 
         return view('livewire.backend.yayasan.index',[
+            'datayayasan' => $this->yayasan,
             'yayasan' => Yayasan::where('status_yayasan_update', '1')->first(),
             'dataprovinsi' => Province::orderBy('code', 'asc')->get(),
             'datapcity' => City::where('province_code', $this->provinceCode)->orderBy('code', 'asc')->get(),

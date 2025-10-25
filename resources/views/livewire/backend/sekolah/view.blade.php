@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="box-body">
-         <div class="row">
+        <div class="row">
             <div class="col-12">
                 <div class="box ">
                     <div class="text-center box-body">
@@ -20,41 +20,20 @@
         <div class="row">
             <div class="col-12 col-lg-5 col-xl-4">
                 <div class="box box-bordered border-success">
-                    <div class="box-body">
-                        <form  enctype="multipart/form-data" action="{{ route('backend.sekolah.updatelogo', $sekolah->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="text-center box-body ">
-                                <label class="form-label">Size : 600 pixel x 400 pixel | 1 MB</label>
-                                <div class="form-group">
-                                    <div class=" fileinput fileinput-new" data-provides="fileinput">
-                                        <div class="fileinput-new img-thumbnail" style="width: 200px;">
-                                            <img src="{{ $sekolah->logosekolahThumbUrl ? $sekolah->logosekolahThumbUrl : '/uploads/images/default/no_image.png' }}" alt="...">
-                                            {{-- <img src="{{ asset('') }}assets/images/no_image.pncreate')g" alt="..."> --}}
-                                        </div>
-                                        <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
-                                        <div>
-                                            <span class="btn btn-outline-secondary btn-file">
-                                                <span class="fileinput-new"> Select image</span>
-                                                <span class="fileinput-exists">Change</span>
-                                                <input type="file" class="@error('logo_sekolah') is-invalid @enderror" name="logo_sekolah" value="{{ old('logo_sekolah') }}">
-                                            </span>
-                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
-                                        </div>
-                                    </div>
-                                    @error('logo_sekolah')
-                                    <div class="form-control-feedback">
-                                        <small> <code>{{ $message }}</code> </small>
-                                    </div>
-                                    @enderror
+                    <div class="box-body box-profile box-bordered border-success">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <p>Pimpinan :</p>
+                                    <p><span class="text-gray">{{$sekolah->nama}}</span> </p>
+                                    <p>No SK Pendidiran : </p>
+                                    <p><span class="text-gray">{{$sekolah->sk_pendirian_sekolah}}</span> </p>
+                                    <p>Tanggal SK Pendirian : </p>
+                                    <p><span class="text-gray">{{$sekolah->tanggal_pendirian_sekolah}}</span> </p>
                                 </div>
                             </div>
-                            <div class="text-center box-footer">
-                                <button type="submit" class="btn btn-sm btn-primary" >
-                                    <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+
                     </div>
                 </div>
             </div>

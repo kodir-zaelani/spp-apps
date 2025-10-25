@@ -1,11 +1,5 @@
 <div>
-    <div class="box-header with-border">
-        <h4 class="box-tile">Yayasan {{$yayasan->nama}}</h4>
-        <div class="box-controls pull-right">
-            <button wire:click="edit('{{ $yayasan->id }}')" class="btn btn-sm btn-warning" title="Edit"><i class="fa fa-edit "></i> Edit</button>
-            <a href="{{route('backend.yayasan.export')}}" class="btn btn-sm btn-success me-3" title="Export"><i class="fa fa-file "></i> Export</a>
-        </div>
-    </div>
+
     <div class="box-body">
          <div class="row">
             <div class="col-12">
@@ -21,40 +15,19 @@
         <div class="row">
             <div class="col-12 col-lg-5 col-xl-4">
                 <div class="box box-bordered border-success">
-                    <div class="box-body">
-                        <form  enctype="multipart/form-data" action="{{ route('backend.yayasan.updatelogo', $yayasan->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="text-center box-body ">
-                                <label class="form-label">Size : 600 pixel x 400 pixel | 1 MB</label>
-                                <div class="form-group">
-                                    <div class=" fileinput fileinput-new" data-provides="fileinput">
-                                        <div class="fileinput-new img-thumbnail" style="width: 200px;">
-                                            <img src="{{ asset('') }}assets/images/no_image.png" alt="...">
-                                        </div>
-                                        <div class="fileinput-preview fileinput-exists img-thumbnail" style="max-width: 200px;"></div>
-                                        <div>
-                                            <span class="btn btn-outline-secondary btn-file">
-                                                <span class="fileinput-new"> Select image</span>
-                                                <span class="fileinput-exists">Change</span>
-                                                <input type="file" class="@error('logo_yayasan') is-invalid @enderror" name="logo_yayasan" value="{{ old('logo_yayasan') }}">
-                                            </span>
-                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">Remove</a>
-                                        </div>
-                                    </div>
-                                    @error('logo_yayasan')
-                                    <div class="form-control-feedback">
-                                        <small> <code>{{ $message }}</code> </small>
-                                    </div>
-                                    @enderror
+                   <div class="box-body box-profile box-bordered border-success">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <p>Pimpinan :</p>
+                                    <p><span class="text-gray">{{$yayasan->nama}}</span> </p>
+                                    <p>No SK Pendidiran : </p>
+                                    <p><span class="text-gray">{{$yayasan->no_pendirian_yayasan}}</span> </p>
+                                    <p>Tanggal SK Pendirian : </p>
+                                    <p><span class="text-gray">{{$yayasan->tgl_pendirian_yayasan}}</span> </p>
                                 </div>
                             </div>
-                            <div class="text-center box-footer">
-                                <button type="submit" class="btn btn-sm btn-primary" >
-                                    <i class="fa fa-save me-2" aria-hidden="true"></i> Ganti Logo
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,7 +45,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#mapsview" role="tab"><span class="hidden-sm-up">
-                            <i class="ion-email"></i></span> <span class="hidden-xs-down">Maps</span>
+                            <i class="ion-email"></i></span> <span class="hidden-xs-down">Peta</span>
                         </a>
                     </li>
                 </ul>

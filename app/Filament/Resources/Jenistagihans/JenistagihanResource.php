@@ -22,7 +22,7 @@ class JenistagihanResource extends Resource
     protected static ?string $model = Jenistagihan::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CreditCard;
-
+    protected static ?int $navigationSort = 5;
     protected static ?string $navigationLabel = 'Jenis Tagihan';
     protected static string | UnitEnum | null $navigationGroup = 'Master';
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bentukpendidikan', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->decimal('sort_bentukpendidikan', 2, 0);
+            $table->decimal('bentuk_pendidikan_id', 2, 0);
             $table->string('nama', 50);
             $table->decimal('jenjang_paud', 1, 0);
             $table->decimal('jenjang_tk', 1, 0);

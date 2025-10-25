@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('agama', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->smallInteger('agama_id')->unsigned();
             $table->string('nama');
             $table->timestamps();

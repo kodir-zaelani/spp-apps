@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use App\Models\Kebutuhankhusus;
+use App\Models\Bentukpendidikan;
+use App\Models\Jenjangpendidikan;
+use App\Models\Statuskepemilikan;
 use App\Imports\SekolahimportModel;
+use Laravolt\Indonesia\Models\City;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Laravolt\Indonesia\Models\Village;
 use Illuminate\Support\Facades\Storage;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Province;
 use Laravolt\Indonesia\Models\Provinsi;
 use App\Imports\SekolahimportCollection;
 use App\Http\Requests\SekolahStoreRequest;
@@ -17,13 +25,13 @@ use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
 
 class SekolahController extends Controller
 {
-     protected $uploadPath;
+    protected $uploadPath;
     protected $uploadPathexcel    = 'files/excel/';
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    * Create a new controller instance.
+    *
+    * @return void
+    */
     public function __construct()
     {
         $this->uploadPath = public_path(config('cms.image.directoryLogo'));
@@ -37,35 +45,45 @@ class SekolahController extends Controller
             'permission:sekolah.index|sekolah.create|sekolah.edit|sekolah.delete|sekolah.trash',
         ];
     }
-     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+    /**
+    * Show the application dashboard.
+    *
+    * @return \Illuminate\Contracts\Support\Renderable
+    */
     public function index()
     {
         return view('backend.sekolah.index', [
             'title' => 'Data Sekolah'
         ]);
 
-        // $sekolah= Sekolah::where('status_sekolah_update', '1')->first();
-
-        // if (!empty($sekolah)) {
-        //     return redirect()->route('backend.sekolah.edit', $sekolah->id);
-        // } else {
-        //     return view('backend.sekolah.create', [
-        //          'dataprovinsi' => Provinsi::orderBy('name', 'asc')->get(),
-        //         'title' => 'Tambah Data'
-        //     ]);
-        // }
+    }
+    public function create()
+    {
+        return view('backend.sekolah.create', [
+            'databentukpendidikan' => Bentukpendidikan::orderBy('bentuk_pendidikan_id', 'asc')->get(),
+            'kebutuhankhusus' => Kebutuhankhusus::orderBy('kebutuhan_khusus', 'asc')->get(),
+            'datajenjangpendidikan' => Jenjangpendidikan::orderBy('jenjang_pendidikan_id', 'asc')->get(),
+            'datakepemilikan' => Statuskepemilikan::orderBy('status_kepemilikan_id', 'asc')->get(),
+            'dataprovinsi' => Province::orderBy('code', 'asc')->get(),
+            // 'datapcity' => City::where('province_code', $this->provinceCode)->orderBy('code', 'asc')->get(),
+            // 'datadistrict' => District::where('city_code', $this->cityCode)->orderBy('code', 'asc')->get(),
+            // 'datavillage' => Village::where('district_code', $this->districtCode)->orderBy('code', 'asc')->get(),
+            'title' => 'Tambah Satuan Pendidikan'
+        ]);
     }
 
     public function edit($sekolah)
     {
         return view('backend.sekolah.edit', [
-             'dataprovinsi' => Provinsi::orderBy('name', 'asc')->get(),
-            'title' => 'Edit sekolah',
-            'sekolah' => $sekolah
+            'databentukpendidikan' => Bentukpendidikan::orderBy('bentuk_pendidikan_id', 'asc')->get(),
+            'kebutuhankhusus' => Kebutuhankhusus::orderBy('kebutuhan_khusus', 'asc')->get(),
+            'datajenjangpendidikan' => Jenjangpendidikan::orderBy('jenjang_pendidikan_id', 'asc')->get(),
+            'datakepemilikan' => Statuskepemilikan::orderBy('status_kepemilikan_id', 'asc')->get(),
+            'dataprovinsi' => Province::orderBy('code', 'asc')->get(),
+            // 'datapcity' => City::where('province_code', $this->provinceCode)->orderBy('code', 'asc')->get(),
+            // 'datadistrict' => District::where('city_code', $this->cityCode)->orderBy('code', 'asc')->get(),
+            // 'datavillage' => Village::where('district_code', $this->districtCode)->orderBy('code', 'asc')->get(),
+            'title' => 'Edit Satuan Pendidikan',
         ]);
     }
 
@@ -93,6 +111,7 @@ class SekolahController extends Controller
             'no_pendirian_sekolah'  => $request->input('no_pendirian_sekolah'),
             'tgl_pendirian_sekolah' => $request->input('tgl_pendirian_sekolah'),
             'status_sekolah_update' => $request->input('status_sekolah_update'),
+            'province_code' => $request->input('province_code'),
 
         ];
 
@@ -114,8 +133,8 @@ class SekolahController extends Controller
                 $thumbnail = str_replace(".{$extension}", "_thumb.{$extension}", $fileName);
 
                 Image::read($destination . '/' . $fileName)
-                    ->resize($width, $height)
-                    ->save($destination . '/' . $thumbnail);
+                ->resize($width, $height)
+                ->save($destination . '/' . $thumbnail);
             }
 
             // Tampung isi image ke variable data
@@ -183,8 +202,8 @@ class SekolahController extends Controller
                 $thumbnail = str_replace(".{$extension}", "_thumb.{$extension}", $fileName);
 
                 Image::read($destination . '/' . $fileName)
-                    ->resize($width, $height)
-                    ->save($destination . '/' . $thumbnail);
+                ->resize($width, $height)
+                ->save($destination . '/' . $thumbnail);
             }
 
             // Tampung isi image ke variable data
@@ -194,8 +213,6 @@ class SekolahController extends Controller
                 'logo_sekolah' => $image_data
             ]);
         }
-
-
 
         $sekolah>update($data);
 
@@ -208,7 +225,7 @@ class SekolahController extends Controller
         return redirect()->back()->with(['success' => 'Data sekolah Berhasil Disimpan!']);
     }
 
-     public function updatelogo (logosekolahUpdateRequest $request, Sekolah $sekolah)
+    public function updatelogo (logosekolahUpdateRequest $request, Sekolah $sekolah)
     {
         //cek gambar lama
         $oldLogo        = $sekolah->logo_sekolah;
@@ -305,7 +322,7 @@ class SekolahController extends Controller
     // function remove image
 
 
-     public function import( Request $request)
+    public function import( Request $request)
     {
         $validated = $request->validate([
             'importfile' => 'required|mimes:xls,xlsx,csv'
@@ -329,4 +346,6 @@ class SekolahController extends Controller
 
         return redirect()->route('backend.sekolah.index')->with('success', 'Data sekolah berhasil diimport!');
     }
+
+
 }
