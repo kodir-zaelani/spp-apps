@@ -65,7 +65,8 @@ class RoleController extends Controller
         // Default data
         $data = [
             'name'        => Str::lower($request->input('name')),
-            'description' => $request->input('description')
+            'description' => $request->input('description'),
+            'guard_name' => 'web'
         ];
 
         $role = Role::create($data);
@@ -130,7 +131,8 @@ class RoleController extends Controller
 
         $role->update([
             'name' => Str::lower($request->input('name')),
-            'description' => $request->input('description')
+            'description' => $request->input('description'),
+            'guard_name' => 'web'
         ]);
 
         //assign permission to role

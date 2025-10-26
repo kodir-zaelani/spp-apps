@@ -156,7 +156,7 @@ class Index extends Component
         $this->selectedItem = $itemId;
         if ($action == 'delete') {
             // This will show the modal in the frontend
-            $this->dispatch('openDeleteModal');
+            $this->dispatch('openDeleteModal', $this->selectedItem);
         } elseif ($action == 'show') {
             $this->dispatch('getModelId', $this->selectedItem);
             // This will show the openShowModal in the frontend
