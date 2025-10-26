@@ -384,7 +384,6 @@ class SekolahController extends Controller
         // import data
         $import = Excel::import(new Importsatuanpendidikan(), ('uploads/files/excel/'.$nama_file));
 
-        // dd($nama_file);
 
         //remove from server
         File::delete('uploads/files/excel/'.$nama_file);
