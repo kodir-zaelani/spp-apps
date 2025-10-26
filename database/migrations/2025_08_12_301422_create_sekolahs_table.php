@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignUuid('yayasan_id')->nullable();
             $table->string('nama');
             $table->string('slug')->unique();
+            $table->string('nama_nomenklatur')->nullable();
             $table->foreignUuid('bentukpendidikan_id')->nullable();
             $table->foreignUuid('jenjangpendidikan_id')->nullable();
             $table->foreignUuid('statuskepemilikan_id')->nullable();
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->foreignUuid('bank_id')->nullable();
             $table->string('nama_bank')->nullable();
             $table->string('cabang_kcp_unit')->nullable();
+            $table->string('rekening_atas_nama')->nullable();
             $table->boolean('mbs')->default(false);
             $table->string('npwp')->nullable();
             $table->string('nama_npwp')->nullable();
@@ -53,6 +55,7 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('email')->nullable();
             $table->string('logo_sekolah')->nullable();
+            $table->boolean('memungut_iuran')->default(false);
             $table->boolean('status_sekolah_update')->default(true);
             $table->timestamps();
             $table->softDeletes();

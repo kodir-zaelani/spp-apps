@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -76,13 +77,18 @@ class Sekolah extends Model
         return $this->belongsTo(Bentukpendidikan::class, 'bentukpendidikan_id');
     }
 
+    public function statuskepemilikan()
+    {
+        return $this->belongsTo(Statuskepemilikan::class, 'statuskepemilikan_id');
+    }
+
     public function generateSlug($nama)
     {
         return Str::slug($nama);
     }
 
     // Set slug auto with nama dengan muttator
-    public function setNameAttribute($value)
+    public function setNamaAttribute($value)
     {
         $this->attributes['nama'] = $value;
         $this->attributes['slug'] = $this->generateSlug($value);
@@ -97,4 +103,7 @@ class Sekolah extends Model
     {
         return $this->hasMany(Jenistagihan::class);
     }
+
+
+
 }

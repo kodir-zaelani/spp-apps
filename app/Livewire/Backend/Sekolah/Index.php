@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Sekolah;
 use App\Models\Sekolah;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\Kebutuhankhusus;
 use App\Models\Bentukpendidikan;
@@ -20,6 +21,8 @@ use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
 class Index extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     public $currentPage   = 1;
     public $paginate      = 10;
@@ -377,8 +380,12 @@ class Index extends Component
     private function headerConfig()
     {
         return [
-            'npsn' => 'NPSN',
-            'nama' => 'Nama',
+            'npsn'                 => 'NPSN',
+            'nama'                 => 'Nama',
+            'status_sekolah'       => 'Status',
+            'city_code'            => 'Kab./Kota',
+            'bentukpendidikan_id'  => 'Bentuk',
+            'statuskepemilikan_id' => 'Kepemilikan',
         ];
     }
 
@@ -435,10 +442,45 @@ class Index extends Component
         }
     }
 
+    public function selectItem($itemId, $action)
+    {
+        $this->selectedItem = $itemId;
+
+        if ($action == 'delete') {
+            // This will show the modal in the frontend
+            $this->dispatch('openDeleteModal');
+        } elseif($action == 'selection') {
+            $this->changeSelection();
+        }
+    }
+
+    // Delete Single Record
+    public function delete()
+    {
+        $sekolah = Sekolah::find($this->selectedItem);
+
+        Sekolah::destroy($this->selectedItem);
+
+        // Sweet alert
+        $this->dispatch('swal:modal', [
+            'title' => 'Success!',
+            'timer' => 4000,
+            'icon'  => 'success',
+            'text'  => 'Post was send to trash',
+            // 'toast'=>true, // Jika mau menggunakan toas
+            // 'position'=>'top-right', // Jika mau menggunakan toas
+            'showConfirmButton' => true,
+            'showCancelButton'  => false,
+        ]);
+
+        $this->dispatch('refreshParent');
+        // This will hide the modal in the frontend
+        $this->dispatch('closeDeleteModal');
+        return redirect()->to('backend/sekolah')->with('danger', 'Sekolah send to trash was successfully');
+    }
 
     public function render()
     {
-
         return view('livewire.backend.sekolah.index',[
             'datasekolah' => $this->sekolah,
             'sekolah' => Sekolah::where('status_sekolah_update', '1')->first(),

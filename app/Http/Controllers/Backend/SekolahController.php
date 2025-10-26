@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Bank;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use App\Models\Kebutuhankhusus;
 use App\Models\Bentukpendidikan;
 use App\Models\Jenjangpendidikan;
 use App\Models\Statuskepemilikan;
-use App\Imports\SekolahimportModel;
 use Laravolt\Indonesia\Models\City;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Laravolt\Indonesia\Models\Village;
+use App\Imports\Importsatuanpendidikan;
 use Illuminate\Support\Facades\Storage;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Province;
 use Laravolt\Indonesia\Models\Provinsi;
-use App\Imports\SekolahimportCollection;
 use App\Http\Requests\SekolahStoreRequest;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Http\Requests\logosekolahUpdateRequest;
@@ -65,9 +66,7 @@ class SekolahController extends Controller
             'datajenjangpendidikan' => Jenjangpendidikan::orderBy('jenjang_pendidikan_id', 'asc')->get(),
             'datakepemilikan' => Statuskepemilikan::orderBy('status_kepemilikan_id', 'asc')->get(),
             'dataprovinsi' => Province::orderBy('code', 'asc')->get(),
-            // 'datapcity' => City::where('province_code', $this->provinceCode)->orderBy('code', 'asc')->get(),
-            // 'datadistrict' => District::where('city_code', $this->cityCode)->orderBy('code', 'asc')->get(),
-            // 'datavillage' => Village::where('district_code', $this->districtCode)->orderBy('code', 'asc')->get(),
+            'bank' => Bank::orderBy('bank_id', 'asc')->get(),
             'title' => 'Tambah Satuan Pendidikan'
         ]);
     }
@@ -79,10 +78,11 @@ class SekolahController extends Controller
             'kebutuhankhusus' => Kebutuhankhusus::orderBy('kebutuhan_khusus', 'asc')->get(),
             'datajenjangpendidikan' => Jenjangpendidikan::orderBy('jenjang_pendidikan_id', 'asc')->get(),
             'datakepemilikan' => Statuskepemilikan::orderBy('status_kepemilikan_id', 'asc')->get(),
+            'bank' => Bank::orderBy('bank_id', 'asc')->get(),
             'dataprovinsi' => Province::orderBy('code', 'asc')->get(),
-            // 'datapcity' => City::where('province_code', $this->provinceCode)->orderBy('code', 'asc')->get(),
-            // 'datadistrict' => District::where('city_code', $this->cityCode)->orderBy('code', 'asc')->get(),
-            // 'datavillage' => Village::where('district_code', $this->districtCode)->orderBy('code', 'asc')->get(),
+            'datapcity' => City::where('province_code', $this->provinceCode)->orderBy('code', 'asc')->get(),
+            'datadistrict' => District::where('city_code', $this->cityCode)->orderBy('code', 'asc')->get(),
+            'datavillage' => Village::where('district_code', $this->districtCode)->orderBy('code', 'asc')->get(),
             'title' => 'Edit Satuan Pendidikan',
         ]);
     }
@@ -92,26 +92,47 @@ class SekolahController extends Controller
 
         // Default data
         $data = [
-            'nama'                  => $request->input('nama'),
-            'alamat'                => $request->input('alamat'),
-            'rt'                    => $request->input('rt'),
-            'rw'                    => $request->input('rw'),
-            'nama_dusun'            => $request->input('nama_dusun'),
-            'province_id'              => $request->input('province_id'),
-            'city_id'             => $request->input('city_id'),
-            'district_id'             => $request->input('district_id'),
-            'village_id'        => $request->input('village_id'),
-            'kode_pos'              => $request->input('kode_pos'),
-            'website'               => $request->input('website'),
-            'email'                 => $request->input('email'),
-            'maps'                  => $request->input('maps'),
-            'lintang'               => $request->input('lintang'),
-            'bujur'                 => $request->input('bujur'),
-            'nama_pimpinam_sekolah' => $request->input('nama_pimpinam_sekolah'),
-            'no_pendirian_sekolah'  => $request->input('no_pendirian_sekolah'),
-            'tgl_pendirian_sekolah' => $request->input('tgl_pendirian_sekolah'),
-            'status_sekolah_update' => $request->input('status_sekolah_update'),
-            'province_code' => $request->input('province_code'),
+            'nss'                       => $request->input('nss'),
+            'npsn'                      => $request->input('npsn'),
+            'nama'                      => $request->input('nama'),
+            'nama_nomenklatur'          => $request->input('nama_nomenklatur'),
+            'bentukpendidikan_id'       => $request->input('bentukpendidikan_id'),
+            'jenjangpendidikan_id'      => $request->input('jenjangpendidikan_id'),
+            'statuskepemilikan_id'      => $request->input('statuskepemilikan_id'),
+            'yayasan_id'                => $request->input('yayasan_id'),
+            'kebutuhankhusus_id'        => $request->input('kebutuhankhusus_id'),
+            'type_sekolah'              => $request->input('type_sekolah'),
+            'status_sekolah'            => $request->input('status_sekolah'),
+            'sk_pendirian_sekolah'      => $request->input('sk_pendirian_sekolah'),
+            'tanggal_pendirian_sekolah' => $request->input('tanggal_pendirian_sekolah'),
+            'sk_izin_operasional'       => $request->input('sk_izin_operasional'),
+            'tanggal_izin_operasional'  => $request->input('tanggal_izin_operasional'),
+            'alamat'                    => $request->input('alamat'),
+            'rt'                        => $request->input('rt'),
+            'rw'                        => $request->input('rw'),
+            'nama_dusun'                => $request->input('nama_dusun'),
+            'kode_pos'                  => $request->input('kode_pos'),
+            'website'                   => $request->input('website'),
+            'no_telp'                   => $request->input('no_telp'),
+            'no_fax'                    => $request->input('no_fax'),
+            'email'                     => $request->input('email'),
+            'maps'                      => $request->input('maps'),
+            'lintang'                   => $request->input('lintang'),
+            'bujur'                     => $request->input('bujur'),
+            'negara_id'                 => $request->input('negara_id'),
+            'province_code'             => $request->input('province_code'),
+            'city_code'                 => $request->input('city_code'),
+            'district_code'             => $request->input('district_code'),
+            'village_code'              => $request->input('village_code'),
+            'no_rekening'               => $request->input('no_rekening'),
+            'bank_id'                   => $request->input('bank_id'),
+            'nama_bank'                 => $request->input('nama_bank'),
+            'cabang_kcp_unit'           => $request->input('cabang_kcp_unit'),
+            'mbs'                       => $request->input('mbs'),
+            'npwp'                      => $request->input('npwp'),
+            'nama_npwp'                 => $request->input('nama_npwp'),
+            'cabang_kcp_unit'           => $request->input('cabang_kcp_unit'),
+            'status_sekolah_update'     => $request->input('status_sekolah_update'),
 
         ];
 
@@ -162,25 +183,47 @@ class SekolahController extends Controller
         $oldLogo        = $sekolah>logo_sekolah;
         // Default data
         $data = [
-            'nama'                  => $request->input('nama'),
-            'alamat'                => $request->input('alamat'),
-            'rt'                    => $request->input('rt'),
-            'rw'                    => $request->input('rw'),
-            'nama_dusun'            => $request->input('nama_dusun'),
-            'desa_kelurahan'        => $request->input('desa_kelurahan'),
-            'kecamatan'             => $request->input('kecamatan'),
-            'kabupaten'             => $request->input('kabupaten'),
-            'provinsi'              => $request->input('provinsi'),
-            'kode_pos'              => $request->input('kode_pos'),
-            'website'               => $request->input('website'),
-            'email'                 => $request->input('email'),
-            'maps'                  => $request->input('maps'),
-            'lintang'               => $request->input('lintang'),
-            'bujur'                 => $request->input('bujur'),
-            'nama_pimpinam_sekolah' => $request->input('nama_pimpinam_sekolah'),
-            'no_pendirian_sekolah'  => $request->input('no_pendirian_sekolah'),
-            'tgl_pendirian_sekolah' => $request->input('tgl_pendirian_sekolah'),
-            'status_sekolah_update' => $request->input('status_sekolah_update'),
+            'nss'                      => $request->input('nss'),
+            'npsn'                     => $request->input('npsn'),
+            'nama'                     => $request->input('nama'),
+            'nama_nomenklatur'         => $request->input('nama_nomenklatur'),
+            'bentukpendidikan_id'      => $request->input('bentukpendidikan_id'),
+            'jenjangpendidikan_id'     => $request->input('jenjangpendidikan_id'),
+            'statuskepemilikan_id'     => $request->input('statuskepemilikan_id'),
+            'yayasan_id'               => $request->input('yayasan_id'),
+            'kebutuhankhusus_id'       => $request->input('kebutuhankhusus_id'),
+            'type_sekolah'             => $request->input('type_sekolah'),
+            'status_sekolah'           => $request->input('status_sekolah'),
+            'sk_pendirian_sekolah'     => $request->input('sk_pendirian_sekolah'),
+            'tanggal_pendirian_sekolah'    => $request->input('tanggal_pendirian_sekolah'),
+            'sk_izin_operasional'      => $request->input('sk_izin_operasional'),
+            'tanggal_izin_operasional' => $request->input('tanggal_izin_operasional'),
+            'alamat'                   => $request->input('alamat'),
+            'rt'                       => $request->input('rt'),
+            'rw'                       => $request->input('rw'),
+            'nama_dusun'               => $request->input('nama_dusun'),
+            'kode_pos'                 => $request->input('kode_pos'),
+            'website'                  => $request->input('website'),
+            'no_telp'                  => $request->input('no_telp'),
+            'no_fax'                   => $request->input('no_fax'),
+            'email'                    => $request->input('email'),
+            'maps'                     => $request->input('maps'),
+            'lintang'                  => $request->input('lintang'),
+            'bujur'                    => $request->input('bujur'),
+            'negara_id'                => $request->input('negara_id'),
+            'province_code'            => $request->input('province_code'),
+            'city_code'                => $request->input('city_code'),
+            'district_code'            => $request->input('district_code'),
+            'village_code'             => $request->input('village_code'),
+            'no_rekening'              => $request->input('no_rekening'),
+            'bank_id'                  => $request->input('bank_id'),
+            'nama_bank'                => $request->input('nama_bank'),
+            'cabang_kcp_unit'          => $request->input('cabang_kcp_unit'),
+            'mbs'                      => $request->input('mbs'),
+            'npwp'                     => $request->input('npwp'),
+            'nama_npwp'                => $request->input('nama_npwp'),
+            'cabang_kcp_unit'          => $request->input('cabang_kcp_unit'),
+            'status_sekolah_update'    => $request->input('status_sekolah_update'),
         ];
 
 
@@ -330,7 +373,6 @@ class SekolahController extends Controller
 
         $file = $request->file('importfile');
 
-        // dd($request->importfile);
 
         $nama_file = $file->hashName();
 
@@ -338,8 +380,11 @@ class SekolahController extends Controller
 
         $path = $file->store($destination);
 
+
         // import data
-        $import = Excel::import(new SekolahimportModel(), ('uploads/files/excel/'.$nama_file));
+        $import = Excel::import(new Importsatuanpendidikan(), ('uploads/files/excel/'.$nama_file));
+
+        // dd($nama_file);
 
         //remove from server
         File::delete('uploads/files/excel/'.$nama_file);

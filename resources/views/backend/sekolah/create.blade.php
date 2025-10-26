@@ -12,7 +12,12 @@
                                 <i class="fa fa-home"><span class="path1"></span><span class="path2"></span></i>
                             </a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Sekolah</li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('backend.sekolah.index') }}">
+                                Satuan Pendidikan
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Tambah Data</li>
                     </ol>
                 </nav>
             </div>
@@ -20,7 +25,7 @@
     </div>
 </div>
 <section class="content">
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-12">
             <div class="box box-bordered border-success">
                 <div class="box-body">
@@ -35,12 +40,12 @@
                         <button type="submit" class="mt-3 btn btn-primary btn-sm">Import</button>
                     </form>
                     <div class="py-20">
-                        Silahkan untuh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1profil_sekolah.xlsx" >Template</a>
+                        Silahkan unduh Template  file spreadsheet terlebih dahulu <a class="btn btn-info btn-sm ms-3" href="{{asset('')}}uploads/files/templates/1profil_sekolah.xlsx" >Template</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <form id="post-form" enctype="multipart/form-data" action="{{ route('backend.sekolah.store') }}" method="post">
         @csrf
         <div class="row">
@@ -66,7 +71,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#messages7" role="tab"><span class="hidden-sm-up">
+                                <a class="nav-link" data-bs-toggle="tab" href="#contacinfo" role="tab"><span class="hidden-sm-up">
                                     <i class="ion-email"></i></span> <span class="hidden-xs-down">Contac Info</span>
                                 </a>
                             </li>
@@ -77,9 +82,15 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#maps7" role="tab"><span class="hidden-sm-up">
-                                    <i class="ion-email"></i></span> <span class="hidden-xs-down">Maps</span>
+                                    <i class="ion-email"></i></span> <span class="hidden-xs-down">Peta</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#bank-npwp" role="tab"><span class="hidden-sm-up">
+                                    <i class="ion-email"></i></span> <span class="hidden-xs-down">Bank & NPWP</span>
+                                </a>
+                            </li>
+
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="home7" role="tabpanel">
@@ -145,7 +156,7 @@
                                                 @enderror
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-4 col-md-4 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="form-group @error('bentukpendidikan_id') has-error @enderror">
                                                         <h5 >Bentuk Pendidikan <span class="text-danger">*</span></h5>
                                                         <select class="form-control select2" style="width: 100%;" name="bentukpendidikan_id" id="bentukpendidikan_id">
@@ -163,31 +174,13 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4 col-md-4 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="form-group @error('jenjangpendidikan_id') has-error @enderror">
                                                         <h5 >Jenjang Pendidikan <span class="text-danger">*</span></h5>
                                                         <select class="form-control select2" style="width: 100%;" name="jenjangpendidikan_id">
                                                             <option value="" holder>Pilih Jenjang Pendidikan</option>
                                                             @foreach ($datajenjangpendidikan as $item)
-                                                            <option value="{{ $item->id }}">
-                                                                {{ $item->nama }}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('jenjangpendidikan_id')
-                                                        <div class="form-control-feedback"><small>
-                                                            <code>{{ $message }}</code> </small>
-                                                        </div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <div class="form-group @error('statuskepemilikan_id') has-error @enderror">
-                                                        <h5 >Status Kepemilikan <span class="text-danger">*</span></h5>
-                                                        <select class="form-control select2" style="width: 100%;" name="statuskepemilikan_id">
-                                                            <option value="" holder disabled >Pilih Status Kepemilikan</option>
-                                                            @foreach ($datakepemilikan as $item)
-                                                            <option value="{{ $item->id }}">
+                                                            <option value="{{ $item->id }}" {{ old('jenjangpendidikan_id') == $item->id ? 'selected' : '' }}>
                                                                 {{ $item->nama }}
                                                             </option>
                                                             @endforeach
@@ -200,12 +193,69 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-12">
+                                                    <div class="form-group @error('statuskepemilikan_id') has-error @enderror">
+                                                        <h5 >Status Kepemilikan <span class="text-danger">*</span></h5>
+                                                        <select class="form-control select2" style="width: 100%;" name="statuskepemilikan_id">
+                                                            <option value="" holder  >Pilih Status Kepemilikan</option>
+                                                            @foreach ($datakepemilikan as $item)
+                                                            <option value="{{ $item->id }}" {{ old('statuskepemilikan_id') == $item->id ? 'selected' : '' }}>
+                                                                {{ $item->nama }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('statuskepemilikan_id')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-12">
+                                                    <div class="form-group @error('status_sekolah') has-error @enderror">
+                                                        <h5 >Status Sekolah <span class="text-danger">*</span></h5>
+                                                        <select class="form-control select2" style="width: 100%;" name="status_sekolah">
+                                                            <option value="" holder  >Pilih Status Sekolah</option>
+                                                            <option value="1" {{ old('status_sekolah') == 1 ? 'selected' : '' }}>
+                                                                Negeri
+                                                            </option>
+                                                            <option value="2" {{ old('status_sekolah') == 2 ? 'selected' : '' }}>
+                                                                Swasta
+                                                            </option>
+                                                        </select>
+                                                        @error('status_sekolah')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-12">
+                                                    <div class="form-group @error('kebutuhankhusus_id') has-error @enderror">
+                                                        <h5 >Kebutuhan Khusus dilayani <span class="text-danger">*</span></h5>
+                                                        <select class="form-control select2" style="width: 100%;" name="kebutuhankhusus_id">
+                                                            <option value="" holder  >Pilih Kebutuhan Khusus</option>
+                                                             @foreach ($kebutuhankhusus as $item)
+                                                            <option value="{{ $item->id }}" {{ old('kebutuhankhusus_id') == $item->id ? 'selected' : '' }}>
+                                                                {{ $item->kebutuhan_khusus }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('kebutuhankhusus_id')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="messages7" role="tabpanel">
+                            <div class="tab-pane" id="contacinfo" role="tabpanel">
                                 <div class="p-15">
                                     <div class="box">
                                         <div class="box-header">
@@ -242,19 +292,39 @@
                                                 </div>
                                                 @enderror
                                             </div>
-                                            <div class="form-group">
-                                                <h5>Nomor Telepon </h5>
-                                                <div class="controls">
-                                                    <input type="number" name="no_telp" class="form-control @error('no_telp') is-invalid @enderror" value="{{ old('no_telp') }}" placeholder=" no_telp">
+                                            <div class="row">
+                                                <div class="col-md-6 col-lg-6 col-12">
+                                                    <div class="form-group">
+                                                        <h5>Nomor Telepon </h5>
+                                                        <div class="controls">
+                                                            <input type="number" name="no_telp" class="form-control @error('no_telp') is-invalid @enderror" value="{{ old('no_telp') }}" placeholder="Nomor Telepon/HP">
+                                                        </div>
+                                                        <div class="form-control-feedback">
+                                                            <small><code> Nomor Telepon/HP </code></small>
+                                                        </div>
+                                                        @error('no_telp')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
-                                                <div class="form-control-feedback">
-                                                    <small><code> Nomor Telepon/HP </code></small>
+                                                <div class="col-md-6 col-lg-6 col-12">
+                                                    <div class="form-group">
+                                                        <h5>Nomor Fax </h5>
+                                                        <div class="controls">
+                                                            <input type="number" name="no_fax" class="form-control @error('no_fax') is-invalid @enderror" value="{{ old('no_fax') }}" placeholder="Nomor Fax">
+                                                        </div>
+                                                        <div class="form-control-feedback">
+                                                            <small><code> Nomor Fax</code></small>
+                                                        </div>
+                                                        @error('no_fax')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
-                                                @error('no_telp')
-                                                <div class="form-control-feedback"><small>
-                                                    <code>{{ $message }}</code> </small>
-                                                </div>
-                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <h5>Alamat Jalan </h5>
@@ -265,54 +335,6 @@
                                                     <small><code> Alamat jalan </code></small>
                                                 </div>
                                                 @error('alamat')
-                                                <div class="form-control-feedback"><small>
-                                                    <code>{{ $message }}</code> </small>
-                                                </div>
-                                                @enderror
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <h5>RT</h5>
-                                                        <div class="controls">
-                                                            <input type="text" name="rt" class="form-control @error('rt') is-invalid @enderror" value="{{ old('rt') }}" placeholder=" RT">
-                                                        </div>
-                                                        <div class="form-control-feedback">
-                                                            <small><code> RT 00000 </code></small>
-                                                        </div>
-                                                        @error('rt')
-                                                        <div class="form-control-feedback"><small>
-                                                            <code>{{ $message }}</code> </small>
-                                                        </div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <h5>RW</h5>
-                                                        <div class="controls">
-                                                            <input type="text" name="rw" class="form-control @error('rw') is-invalid @enderror" value="{{ old('rw') }}" placeholder=" RW">
-                                                        </div>
-                                                        <div class="form-control-feedback">
-                                                            <small><code> RW 00000 </code></small>
-                                                        </div>
-                                                        @error('rw')
-                                                        <div class="form-control-feedback"><small>
-                                                            <code>{{ $message }}</code> </small>
-                                                        </div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <h5>Nama Dusun</h5>
-                                                <div class="controls">
-                                                    <input type="text" name="nama_dusun" class="form-control @error('nama_dusun') is-invalid @enderror" value="{{ old('nama_dusun') }}" placeholder=" Nama Dusun">
-                                                </div>
-                                                <div class="form-control-feedback">
-                                                    <small><code> Nama Dusun </code></small>
-                                                </div>
-                                                @error('nama_dusun')
                                                 <div class="form-control-feedback"><small>
                                                     <code>{{ $message }}</code> </small>
                                                 </div>
@@ -379,8 +401,52 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <h5>Nama Dusun</h5>
+                                                <div class="controls">
+                                                    <input type="text" name="nama_dusun" class="form-control @error('nama_dusun') is-invalid @enderror" value="{{ old('nama_dusun') }}" placeholder=" Nama Dusun">
+                                                </div>
+                                                <div class="form-control-feedback">
+                                                    <small><code> Nama Dusun </code></small>
+                                                </div>
+                                                @error('nama_dusun')
+                                                <div class="form-control-feedback"><small>
+                                                    <code>{{ $message }}</code> </small>
+                                                </div>
+                                                @enderror
+                                            </div>
                                             <div class="row">
-                                                <div class="col-8">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <h5>RT</h5>
+                                                        <div class="controls">
+                                                            <input type="text" name="rt" class="form-control @error('rt') is-invalid @enderror" value="{{ old('rt') }}" placeholder=" RT">
+                                                        </div>
+                                                        <div class="form-control-feedback">
+                                                            <small><code> RT 00000 </code></small>
+                                                        </div>
+                                                        @error('rt')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <h5>RW</h5>
+                                                        <div class="controls">
+                                                            <input type="text" name="rw" class="form-control @error('rw') is-invalid @enderror" value="{{ old('rw') }}" placeholder=" RW">
+                                                        </div>
+                                                        <div class="form-control-feedback">
+                                                            <small><code> RW 00000 </code></small>
+                                                        </div>
+                                                        @error('rw')
+                                                        <div class="form-control-feedback"><small>
+                                                            <code>{{ $message }}</code> </small>
+                                                        </div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="col-4">
                                                     <div class="form-group">
@@ -489,10 +555,11 @@
                                                         <textarea rows="5" name="maps" class="form-control @error('maps') is-invalid @enderror" placeholder="maps">{{ old('maps') }} </textarea>
                                                     </div>
                                                     <div class="form-control-feedback">
+                                                        Contoh:
                                                         <small>
-                                                            Exp:
                                                             <code>
-                                                                https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6519218789713!2d117.08926731409771!3d-0.5232837354157259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67f93048b4a03%3A0x77d556abf72c93d0!2sPENERBIT%20BUKU%20MEDIATAMA%20CABANG%20SAMARINDA!5e0!3m2!1sen!2sid!4v1643782605913!5m2!1sen!2sid
+                                                                &lt;iframe
+                                                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6654873837024!2d117.11685557310669!3d-0.5015000352680353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df67e561e3a94f5%3A0x3f7c190ac0acffd6!2sKB%20%26%20TK%20ISLAMIC%20CENTER%20SAMARINDA%20KALTIM!5e0!3m2!1sen!2sid!4v1761440771840!5m2!1sen!2sid" width="800" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;
                                                             </code>
                                                         </small>
                                                     </div>
@@ -507,12 +574,85 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="tab-pane " id="bank-npwp" role="tabpanel">
+                                <div class="p-15">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                Bank & NPWP
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <h5>Nomor Rekening <span class="text-danger">*</span></h5>
+                                                <div class="controls">
+                                                    <input type="number" name="no_rekening" class="form-control @error('no_rekening') is-invalid @enderror" value="{{ old('no_rekening') }}" placeholder="Nomor Statistik Sekolah" required>
+                                                </div>
+                                                @error('no_rekening')
+                                                <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group @error('bank_id') has-error @enderror">
+                                                <h5 >Nama Bank <span class="text-danger">*</span></h5>
+                                                <select class="form-control select2" style="width: 100%;" name="bank_id" id="bank_id">
+                                                    <option value="" holder>Pilih Nama Bank</option>
+                                                    @foreach ($bank as $item)
+                                                    <option value="{{ $item->id }}" {{ old('bank_id') == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->bank_id }} | {{ $item->nama }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('bank_id')
+                                                <div class="form-control-feedback"><small>
+                                                    <code>{{ $message }}</code> </small>
+                                                </div>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <h5>KCP Bank Unit <span class="text-danger">*</span></h5>
+                                                <div class="controls">
+                                                    <input type="text" name="cabang_kcp_unit" class="form-control @error('cabang_kcp_unit') is-invalid @enderror" value="{{ old('cabang_kcp_unit') }}" placeholder="Nama Sekolah" required>
+                                                </div>
+                                                @error('cabang_kcp_unit')
+                                                <div class="form-control-feedback"><small> <code>{{ $message }}</code> </small></div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="form-group">
+                                                <h5>NPWP <span class="text-danger">*</span></h5>
+                                                <div class="controls">
+                                                    <input type="url" name="npwp" class="form-control @error('npwp') is-invalid @enderror" value="{{ old('npwp') }}" placeholder="Nomor Sk Pendiriran" required>
+                                                </div>
+                                                @error('npwp')
+                                                <div class="form-control-feedback"><small>
+                                                    <code>{{ $message }}</code> </small>
+                                                </div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="form-group">
+                                                <h5>Nama di NPWP <span class="text-danger">*</span></h5>
+                                                <div class="controls">
+                                                    <input type="text" name="nama_npwp" class="form-control @error('nama_npwp') is-invalid @enderror" value="{{ old('nama_npwp') }}" placeholder="Tanggal Pendirian" required>
+                                                </div>
+                                                @error('nama_npwp')
+                                                <div class="form-control-feedback"><small>
+                                                    <code>{{ $message }}</code> </small>
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
 </section>
 
 @push('styles')

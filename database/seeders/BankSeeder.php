@@ -14,13 +14,13 @@ class BankSeeder extends Seeder
      */
     public function run(): void
     {
-        $json = File::get('database/data_json/negara.json');
+        $json = File::get('database/data_json/bank.json');
         $data = json_decode($json);
 
         foreach($data as $obj){
             Bank::create([
-                'bank_id'    => $obj->negara_id,
-                'nama'       => $obj->nama,
+                'bank_id'    => $obj->id_bank,
+                'nama'       => $obj->nm_bank,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
