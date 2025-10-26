@@ -187,6 +187,8 @@ class Index extends Component
         ]);
         $this->dispatch('refreshParent');
         $this->dispatch('closeDeleteModalAll');
+
+
     }
 
     // Delete Single Record
@@ -209,6 +211,8 @@ class Index extends Component
         $this->dispatch('refreshParent');
         // This will hide the modal in the frontend
         $this->dispatch('closeDeleteModal');
+        return redirect()->to('backend/roles/index')->with('danger', 'Delete Role was successfully');
+
     }
     public function render()
     {
